@@ -1,0 +1,14 @@
+{
+  "watch": [
+    "src"
+  ],
+  "ext": "ts,json",
+  "ignore": [
+    ".next/**",
+    "app/**",
+    "node_modules/**",
+    "dist/**"
+  ],
+  "exec": "nest start",
+  "delay": 1000
+}
