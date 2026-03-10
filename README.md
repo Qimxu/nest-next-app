@@ -1,254 +1,215 @@
-# NestJS + Next.js Integrated Application
+# NestJS + Next.js 全栈应用
 
-A full-stack application that seamlessly integrates NestJS backend with Next.js frontend, running on a single server.
+一个基于 NestJS 和 Next.js 的全栈应用模板，集成 JWT 认证、Redis 缓存、MySQL 数据库、国际化支持。
 
-## 🚀 Features
+## 技术栈
 
-- **NestJS Backend**: Robust backend with powerful dependency injection and modular architecture
-- **Next.js Frontend**: Modern React framework with App Router and server-side rendering
-- **Unified Routing**: Single server handling both API routes (`/api/*`) and Next.js pages
-- **JWT Authentication**: Secure authentication with access tokens and refresh tokens
-- **Redis Cache**: Token blacklist and caching support
-- **TypeORM**: MySQL database with migrations support
-- **Swagger API Documentation**: Interactive API documentation
-- **TypeScript**: Full type safety across the entire stack
-- **Tailwind CSS**: Utility-first CSS framework for rapid UI development
-- **Winston Logger**: Production-ready logging system
+### 后端
+- **NestJS** - 企业级 Node.js 框架
+- **TypeORM** - ORM 数据库框架
+- **MySQL** - 数据库
+- **Redis** - 缓存
+- **JWT** - 身份认证
+- **Swagger** - API 文档
+- **Winston** - 日志管理
 
-## 📁 Project Structure
+### 前端
+- **Next.js 14** - React 全栈框架 (App Router)
+- **Tailwind CSS** - CSS 框架
+- **next-intl** - 国际化
+
+## 项目结构
 
 ```
-nest-next-app/
-├── src/                          # NestJS backend source
-│   ├── main.ts                   # Application entry point
-│   ├── app.module.ts             # Root module
-│   ├── common/                   # Shared utilities
-│   │   ├── config/               # Configuration files
-│   │   ├── decorators/           # Custom decorators
-│   │   ├── filters/              # Exception filters
-│   │   ├── interceptors/         # Request interceptors
-│   │   ├── interfaces/           # TypeScript interfaces
-│   │   └── logger/               # Winston logger
-│   └── modules/                  # Feature modules
-│       ├── auth/                 # Authentication module
-│       ├── users/                # User management
-│       ├── redis/                # Redis service
-│       ├── health/               # Health check
-│       └── next/                 # Next.js integration
-├── app/                          # Next.js App Router pages
-│   ├── layout.tsx                # Root layout
-│   ├── page.tsx                  # Home page
-│   ├── login/                    # Login page
-│   ├── register/                 # Register page
-│   ├── users/                    # Users page
-│   └── globals.css               # Global styles
-├── lib/                          # Frontend utilities
-│   ├── api/                      # API client and services
-│   ├── hooks/                    # React hooks
-│   └── store/                    # Zustand state management
-├── config/                       # Environment configuration files
-├── test/                         # E2E tests
-├── package.json
-└── README.md
+├── app/                    # Next.js 应用目录
+│   ├── [locale]/          # 国际化路由
+│   │   ├── layout.tsx     # 布局
+│   │   ├── page.tsx       # 首页
+│   │   └── not-found.tsx  # 404 页面
+│   ├── layout.tsx         # 根布局
+│   └── globals.css        # 全局样式
+├── config/                 # 环境配置文件
+│   ├── app.config.development.yaml
+│   ├── app.config.production.yaml
+│   └── app.config.sit.yaml
+├── lib/                    # 前端工具库
+│   ├── api/               # API 请求
+│   ├── hooks/             # React Hooks
+│   └── store/             # Zustand 状态管理
+├── messages/              # 国际化翻译文件
+├── src/                   # NestJS 源码
+│   ├── main.ts            # 入口文件
+│   ├── app.module.ts      # 根模块
+│   ├── common/            # 公共模块
+│   │   ├── config/        # 配置
+│   │   ├── decorators/    # 装饰器
+│   │   ├── filters/       # 异常过滤器
+│   │   ├── guards/        # 守卫
+│   │   ├── interceptors/  # 拦截器
+│   │   ├── middleware/    # 中间件
+│   │   ├── helpers/       # 工具函数
+│   │   └── logger/        # 日志模块
+│   └── modules/           # 业务模块
+│       ├── auth/          # 认证模块
+│       ├── users/         # 用户模块
+│       ├── next/          # Next.js 集成
+│       ├── redis/         # Redis 模块
+│       └── health/        # 健康检查
+└── test/                  # 测试文件
 ```
 
-## 🛠️ Installation
+## 快速开始
 
-### Prerequisites
-- Node.js 20+
-- MySQL 8.0+
-- Redis 6.0+
+### 环境要求
 
-### Setup
+- Node.js >= 18
+- MySQL >= 8.0
+- Redis >= 6.0
 
-1. Clone the repository and install dependencies:
+### 安装依赖
+
 ```bash
 npm install
 ```
 
-2. Copy environment variables:
+### 配置
+
+1. 创建配置文件：
+
 ```bash
-cp .env.example .env
+cp config/app.config.development.yaml config/app.config.local.yaml
 ```
 
-3. Configure your environment variables in `.env`
+2. 修改配置文件中的数据库、Redis、JWT 等配置：
 
-4. Create MySQL database:
-```sql
-CREATE DATABASE nest_next_app CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```yaml
+# config/app.config.development.yaml
+db:
+  host: localhost
+  port: 3306
+  username: root
+  password: your_password
+  database: nest_next_app
+
+redis:
+  host: localhost
+  port: 6379
+
+jwt:
+  secret: your-jwt-secret-key
+  refreshSecret: your-refresh-secret-key
 ```
 
-5. Run database migrations:
-```bash
-npm run migration:run
-```
+### 运行
 
-6. Start the application:
 ```bash
+# 开发环境
 npm run start:dev
+
+# SIT 环境
+npm run start:sit
+
+# 生产环境
+npm run start:prod
 ```
 
-7. Visit `http://localhost:3000`
-
-## 📡 Available Routes
-
-### Web Pages
-- `/web` - Home page
-- `/web/login` - Login page
-- `/web/register` - Register page
-- `/web/users` - Users list
-
-### API Endpoints
-
-#### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login
-- `POST /api/auth/refresh` - Refresh access token
-- `POST /api/auth/logout` - Logout (requires authentication)
-
-#### Users
-- `GET /api/users` - Get all users
-- `GET /api/users/profile` - Get current user (requires authentication)
-- `GET /api/users/:id` - Get user by ID
-- `POST /api/users` - Create user
-- `DELETE /api/users/:id` - Delete user (requires authentication)
-
-#### Redis
-- `GET /api/redis/test` - Test Redis connection
-- `POST /api/redis/set` - Set cache value
-- `GET /api/redis/get/:key` - Get cache value
-
-#### Health
-- `GET /health` - Health check
-
-#### API Documentation
-- `GET /api/docs` - Swagger API documentation
-
-## 🗃️ Database Migrations
-
-### Create a new migration
-```bash
-npm run migration:create -- src/migrations/MigrationName
-```
-
-### Generate migration from entity changes
-```bash
-npm run migration:generate -- src/migrations/MigrationName
-```
-
-### Run migrations
-```bash
-npm run migration:run
-```
-
-### Revert last migration
-```bash
-npm run migration:revert
-```
-
-### View migration status
-```bash
-npm run migration:show
-```
-
-## 🐳 Docker Deployment
-
-### Build and run with Docker Compose
+### 构建
 
 ```bash
-# Development
-npm run docker:dev
+# 开发环境构建
+npm run build:dev
 
-# Production
-npm run docker:prod
+# SIT 环境构建
+npm run build:sit
+
+# 生产环境构建
+npm run build:prod
 ```
 
-### Manual Docker build
+## 常用命令
+
+| 命令 | 说明 |
+|------|------|
+| `npm run start:dev` | 开发模式运行 |
+| `npm run build` | 构建项目 |
+| `npm run lint` | 代码检查 |
+| `npm run format` | 代码格式化 |
+| `npm run test` | 运行测试 |
+
+## API 文档
+
+启动项目后访问：http://localhost:3000/docs
+
+## API 路由
+
+### 认证模块
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| POST | `/auth/register` | 用户注册 |
+| POST | `/auth/login` | 用户登录 |
+| POST | `/auth/refresh` | 刷新 Token |
+| POST | `/auth/logout` | 退出登录 |
+
+### 用户模块
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| GET | `/users` | 获取用户列表 |
+| GET | `/users/profile` | 获取当前用户 |
+| GET | `/users/:id` | 获取用户详情 |
+| POST | `/users` | 创建用户 |
+| DELETE | `/users/:id` | 删除用户 |
+
+### 健康检查
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| GET | `/health` | 健康检查 |
+
+## 路由架构
+
+```
+请求 → NestJS 服务器
+         ↓
+    匹配 API 路由? (/auth/*, /users/*)
+         ↓              ↓
+        是             否
+         ↓              ↓
+    Nest 处理     Next.js 渲染页面
+                       ↓
+              /en/*, /zh/* (国际化路由)
+```
+
+## 环境配置
+
+项目使用 YAML 配置文件管理不同环境：
+
+| 文件 | 环境 |
+|------|------|
+| `app.config.development.yaml` | 开发环境 |
+| `app.config.sit.yaml` | 测试环境 |
+| `app.config.production.yaml` | 生产环境 |
+
+通过 `NODE_ENV` 环境变量切换：
+
 ```bash
-docker build -t nest-next-app .
-docker run -p 3000:3000 nest-next-app
+NODE_ENV=development npm run start:dev
+NODE_ENV=sit npm run start:sit
+NODE_ENV=production npm run start:prod
 ```
 
-## 📝 Scripts
+## 国际化
 
-### Development
-- `npm run start:dev` - Start with watch mode (development)
-- `npm run start:sit` - Start in SIT environment
-- `npm run start:debug` - Start with debug mode
+支持中文和英文，路由前缀：
+- `/zh/*` - 中文
+- `/en/*` - 英文
 
-### Production
-- `npm run build` - Build the application
-- `npm run start:prod` - Start in production mode
-- `npm run deploy:dev` - Build and deploy to development
-- `npm run deploy:sit` - Build and deploy to SIT
-- `npm run deploy:prd` - Build and deploy to production
+翻译文件位于 `messages/` 目录。
 
-### Testing
-- `npm run test` - Run unit tests
-- `npm run test:watch` - Run tests in watch mode
-- `npm run test:cov` - Run tests with coverage
-- `npm run test:e2e` - Run E2E tests
+## 代码规范
 
-### Code Quality
-- `npm run lint` - Run ESLint
-- `npm run format` - Format code with Prettier
+- **ESLint + Prettier** - 代码格式化
+- **Husky + lint-staged** - 提交前检查
+- **Commitlint** - 提交信息规范
 
-## 🔧 Configuration
-
-### Environment Variables
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `NODE_ENV` | Environment mode | `development` |
-| `PORT` | Server port | `3000` |
-| `DB_HOST` | Database host | `localhost` |
-| `DB_PORT` | Database port | `3306` |
-| `DB_USERNAME` | Database username | `root` |
-| `DB_PASSWORD` | Database password | ` ` |
-| `DB_DATABASE` | Database name | `nest_next_app` |
-| `REDIS_HOST` | Redis host | `localhost` |
-| `REDIS_PORT` | Redis port | `6379` |
-| `JWT_SECRET` | JWT secret key | *required* |
-| `JWT_REFRESH_SECRET` | JWT refresh secret | *required* |
-
-### Configuration Files
-
-Configuration files are located in the `config/` directory:
-- `app.config.development.yaml` - Development config
-- `app.config.sit.yaml` - SIT config
-- `app.config.production.yaml` - Production config
-
-## 🎨 Tech Stack
-
-### Backend
-- **NestJS**: Progressive Node.js framework
-- **TypeORM**: SQL ORM
-- **Passport.js**: Authentication middleware
-- **JWT**: JSON Web Tokens
-- **Redis**: Caching and token blacklist
-- **Winston**: Logging
-- **Swagger**: API documentation
-
-### Frontend
-- **Next.js 14**: React framework with App Router
-- **React 18**: UI library
-- **Tailwind CSS**: Styling
-- **Zustand**: State management
-
-## 📄 License
+## License
 
 MIT
-
-## 🤝 Contributing
-
-1. Create a feature branch
-2. Make your changes
-3. Run tests: `npm run test && npm run test:e2e`
-4. Submit a pull request
-
-## 📋 CI/CD
-
-The project includes GitHub Actions workflows for:
-- Lint and test on pull requests
-- Build and deploy on merge to main/develop
-- Docker image building and publishing
