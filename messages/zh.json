@@ -117,6 +117,7 @@
   },
   "home": {
     "welcome": "欢迎来到 NestJS + Next.js 应用",
+    "subtitle": "一个集成认证、缓存与国际化的现代全栈模版",
     "apiEndpoints": "API 端点",
     "apiEndpointsDesc": "访问 NestJS 提供的 RESTful API",
     "userManagement": "用户管理",

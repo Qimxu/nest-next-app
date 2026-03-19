@@ -23,10 +23,11 @@ export class ThrottleMiddleware implements NestMiddleware {
   private readonly windowMs = 60000; // 1 分钟
   private readonly maxRequests = 100; // 100 次请求
   private readonly message = 'Too many requests, please try again later.';
+  private readonly cleanupTimer: NodeJS.Timeout;
 
   constructor() {
     // 定期清理过期记录
-    setInterval(() => {
+    this.cleanupTimer = setInterval(() => {
       const now = Date.now();
       Object.keys(this.store).forEach((key) => {
         if (this.store[key].resetTime < now) {
@@ -34,6 +35,9 @@ export class ThrottleMiddleware implements NestMiddleware {
         }
       });
     }, this.windowMs);
+
+    // Avoid keeping Node process alive (tests/CI)
+    this.cleanupTimer.unref?.();
   }
 
   use(req: Request, res: Response, next: NextFunction) {

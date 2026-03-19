@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
-import { HttpExceptionFilter } from '../src/common/filters/http-exception.filter';
+import { HttpExceptionFilter } from '../src/core/filters/http-exception.filter';
 
 describe('Authentication (e2e)', () => {
   let app: INestApplication;

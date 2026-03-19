@@ -1,21 +1,9 @@
-const { load } = require('js-yaml');
-const { readFileSync } = require('fs');
-const { join } = require('path');
 const createNextIntlPlugin = require('next-intl/plugin');
+const { loadYamlConfig } = require('./config/load-yaml-config');
 
 const withNextIntl = createNextIntlPlugin('./i18n.ts');
 
-// 加载配置
-const env = process.env.NODE_ENV || 'development';
-const configFile = `app.config.${env}.yaml`;
-const configPath = join(process.cwd(), 'config', configFile);
-
-let config = {};
-try {
-  config = load(readFileSync(configPath, 'utf-8')) || {};
-} catch (e) {
-  console.warn(`Config file not found: ${configPath}`);
-}
+const config = loadYamlConfig(process.env.NODE_ENV);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -24,8 +12,7 @@ const nextConfig = {
   distDir: '.next',
   env: {
     API_BASE_URL: config.app?.apiBaseUrl || 'http://localhost:3000',
-    NEXT_PUBLIC_API_BASE_URL:
-      config.app?.apiBaseUrl || 'http://localhost:3000',
+    NEXT_PUBLIC_API_BASE_URL: config.app?.apiBaseUrl || 'http://localhost:3000',
   },
 };
 

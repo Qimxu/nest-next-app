@@ -7,7 +7,7 @@ import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import { BusinessException } from '../../common/exceptions/business.exception';
+import { BusinessException } from '../../core/exceptions/business.exception';
 
 @Injectable()
 export class AuthService {
