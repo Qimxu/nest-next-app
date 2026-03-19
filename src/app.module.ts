@@ -1,7 +1,13 @@
-import { Module, Provider, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import {
+  Module,
+  Provider,
+  NestModule,
+  MiddlewareConsumer,
+} from '@nestjs/common';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { load } from 'js-yaml';
 import { readFileSync } from 'fs';
 import { join } from 'path';
@@ -11,6 +17,7 @@ import { NextModule } from './modules/next/next.module';
 import { RedisModule, RedisService } from './modules/redis';
 import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
 import { TokenBlacklistInterceptor } from './modules/auth/token-blacklist.interceptor';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import { ThrottleMiddleware } from './common/middleware/throttle.middleware';
 import { SecurityMiddleware } from './common/middleware/security.middleware';
 import {
@@ -40,6 +47,10 @@ const globalProviders: Provider[] = [
   },
   {
     provide: APP_INTERCEPTOR,
+    useClass: TransformInterceptor,
+  },
+  {
+    provide: APP_INTERCEPTOR,
     useFactory: (redisService: RedisService) => {
       return new TokenBlacklistInterceptor(redisService);
     },
@@ -49,6 +60,11 @@ const globalProviders: Provider[] = [
 
 @Module({
   imports: [
+    // 静态资源服务
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'static'),
+      serveRoot: '/static',
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [
@@ -87,8 +103,12 @@ const globalProviders: Provider[] = [
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
+    // 安全中间件应用于所有路由
+    consumer.apply(SecurityMiddleware).forRoutes('*');
+    // 限流中间件只应用于 API 路由
     consumer
-      .apply(SecurityMiddleware, ThrottleMiddleware)
-      .forRoutes('*');
+      .apply(ThrottleMiddleware)
+      .forRoutes('auth/*', 'users/*');
   }
 }
+

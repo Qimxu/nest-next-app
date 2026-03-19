@@ -24,7 +24,25 @@ export function setupSwagger(app: INestApplication) {
       tagsSorter: 'alpha',
       operationsSorter: 'alpha',
     },
-    customCss: '.swagger-ui .topbar { display: none }',
+    customCss: `
+      .swagger-ui .topbar { display: none }
+      .swagger-ui .info .title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .swagger-ui .info .title::before {
+        content: '';
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background-image: url('/static/logo.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+    `,
     customSiteTitle: 'NestNext API Docs',
+    customfavIcon: '/static/logo.png',
   });
 }

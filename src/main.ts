@@ -6,6 +6,7 @@ import { join } from 'path';
 
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { TransformInterceptor, LogInterceptor } from './common/interceptors';
 import { corsConfig } from './common/config/security.config';
 import { validationConfig } from './common/config/validation.config';
 import { setupSwagger } from './common/config/swagger.config';
@@ -24,6 +25,9 @@ async function bootstrap() {
 
   // 全局验证管道
   app.useGlobalPipes(new ValidationPipe(validationConfig));
+
+  // 全局拦截器（注意顺序：日志 -> 响应转换）
+  app.useGlobalInterceptors(new LogInterceptor(), new TransformInterceptor());
 
   // 全局异常过滤器
   app.useGlobalFilters(new HttpExceptionFilter());
