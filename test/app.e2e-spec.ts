@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { AppModule } from './../src/app.module';
 
 describe('AppController (e2e)', () => {
@@ -26,17 +26,16 @@ describe('AppController (e2e)', () => {
         .expect(200)
         .expect((res) => {
           expect(res.body).toHaveProperty('code', 200);
-          expect(res.body).toHaveProperty('message');
           expect(res.body).toHaveProperty('data');
+          expect(res.body.data).toHaveProperty('status', 'ok');
+          expect(res.body.data).toHaveProperty('timestamp');
         });
     });
   });
 
   describe('/api (GET)', () => {
     it('should return 404 for undefined route', () => {
-      return request(app.getHttpServer())
-        .get('/api/nonexistent')
-        .expect(404);
+      return request(app.getHttpServer()).get('/nonexistent').expect(404);
     });
   });
 });

@@ -13,10 +13,6 @@ export * from './interceptors';
 // Interfaces
 export * from './interfaces/response.interface';
 
-// Middleware
-export * from './middleware/security.middleware';
-export * from './middleware/throttle.middleware';
-
 // Pipes
 export * from './pipes/sanitize.pipe';
 

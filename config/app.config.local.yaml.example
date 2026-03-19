@@ -1,0 +1,30 @@
+# Local overrides (copy to app.config.local.yaml)
+app:
+  port: 3000
+  nodeEnv: development
+  apiBaseUrl: http://localhost:3000
+
+db:
+  type: mysql
+  host: localhost
+  port: 3306
+  username: root
+  password: root
+  database: nest_next_app
+  synchronize: true
+
+redis:
+  host: localhost
+  port: 6379
+  password:
+  db: 0
+
+jwt:
+  secret: your-jwt-secret-key-change-in-production
+  refreshSecret: your-jwt-refresh-secret-key-change-in-production
+  expiresIn: 30m
+  refreshExpiresIn: 7d
+
+throttle:
+  ttl: 60000
+  limit: 100

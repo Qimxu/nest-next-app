@@ -1,8 +1,4 @@
-import {
-  PipeTransform,
-  Injectable,
-  ArgumentMetadata,
-} from '@nestjs/common';
+import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common';
 import { sanitizeInput, sanitizeObject } from '../utils/sanitize.util';
 
 /**

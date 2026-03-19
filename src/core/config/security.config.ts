@@ -6,10 +6,7 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 export const corsConfig: CorsOptions = {
   origin: (origin, callback) => {
     // 允许的源列表
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'http://127.0.0.1:3000',
-    ];
+    const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000'];
 
     // 开发环境允许所有源
     if (process.env.NODE_ENV === 'development') {

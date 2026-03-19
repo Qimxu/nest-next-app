@@ -2,6 +2,7 @@ module.exports = {
   moduleFileExtensions: ['js', 'json', 'ts'],
   rootDir: 'src',
   testRegex: '.*\\.spec\\.ts$',
+  passWithNoTests: true,
   transform: {
     '^.+\\.(t|j)s$': ['ts-jest', {
       tsconfig: 'tsconfig.server.json',

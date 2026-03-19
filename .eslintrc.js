@@ -14,12 +14,15 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: [
-    '.eslintrc.js',
-    'node_modules',
-    'dist',
-    '.next',
-    'coverage',
+  ignorePatterns: ['.eslintrc.js', 'node_modules', 'dist', '.next', 'coverage'],
+  overrides: [
+    {
+      files: ['*.js', '*.cjs', '*.mjs'],
+      rules: {
+        // Allow CommonJS in Node config files
+        '@typescript-eslint/no-var-requires': 'off',
+      },
+    },
   ],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',

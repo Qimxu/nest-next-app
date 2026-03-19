@@ -72,12 +72,18 @@
 npm install
 ```
 
+### 使用 Docker 启动依赖（推荐）
+
+```bash
+docker compose up -d
+```
+
 ### 配置
 
 1. 创建配置文件：
 
 ```bash
-cp config/app.config.development.yaml config/app.config.local.yaml
+cp config/app.config.local.yaml.example config/app.config.local.yaml
 ```
 
 2. 修改配置文件中的数据库、Redis、JWT 等配置：
@@ -209,6 +215,14 @@ NODE_ENV=production npm run start:prod
 - **ESLint + Prettier** - 代码格式化
 - **Husky + lint-staged** - 提交前检查
 - **Commitlint** - 提交信息规范
+
+## 贡献
+
+见 `CONTRIBUTING.md`。
+
+## Security
+
+见 `SECURITY.md`。
 
 ## License
 

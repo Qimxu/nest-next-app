@@ -117,6 +117,7 @@
   },
   "home": {
     "welcome": "Welcome to NestJS + Next.js App",
+    "subtitle": "A modern full-stack template with auth, cache, and i18n baked in",
     "apiEndpoints": "API Endpoints",
     "apiEndpointsDesc": "Access RESTful APIs powered by NestJS",
     "userManagement": "User Management",

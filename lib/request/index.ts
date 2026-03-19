@@ -101,7 +101,10 @@ class HttpClient {
     return token;
   }
 
-  private buildURL(url: string, params?: Record<string, string | number>): string {
+  private buildURL(
+    url: string,
+    params?: Record<string, string | number>,
+  ): string {
     const fullURL = url.startsWith('http') ? url : `${this.baseURL}${url}`;
     if (params) {
       const searchParams = new URLSearchParams();
@@ -119,20 +122,43 @@ class HttpClient {
     if (response.status === 401) {
       tokenManager.clearTokens();
       if (typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent('auth:logout', { detail: { reason: 'token_expired' } }));
+        window.dispatchEvent(
+          new CustomEvent('auth:logout', {
+            detail: { reason: 'token_expired' },
+          }),
+        );
       }
       throw new ApiError('Unauthorized', 401, data.data);
     }
-    if (!response.ok) throw new ApiError(data.message || `HTTP ${response.status}`, response.status, data.data);
-    if (data.code >= 400) throw new ApiError(data.message, data.code, data.data);
+    if (!response.ok)
+      throw new ApiError(
+        data.message || `HTTP ${response.status}`,
+        response.status,
+        data.data,
+      );
+    if (data.code >= 400)
+      throw new ApiError(data.message, data.code, data.data);
     return data;
   }
 
-  async request<T>(url: string, config: { method?: string; body?: any; params?: Record<string, string | number>; timeout?: number; signal?: AbortSignal; headers?: Record<string, string> } = {}): Promise<T> {
+  async request<T>(
+    url: string,
+    config: {
+      method?: string;
+      body?: any;
+      params?: Record<string, string | number>;
+      timeout?: number;
+      signal?: AbortSignal;
+      headers?: Record<string, string>;
+    } = {},
+  ): Promise<T> {
     const { method = 'GET', body, params, timeout, signal, headers } = config;
     const token = this.getToken();
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout || this.defaultTimeout);
+    const timeoutId = setTimeout(
+      () => controller.abort(),
+      timeout || this.defaultTimeout,
+    );
 
     try {
       const response = await fetch(this.buildURL(url, params), {
@@ -152,7 +178,8 @@ class HttpClient {
     } catch (error) {
       clearTimeout(timeoutId);
       if (error instanceof ApiError) throw error;
-      if ((error as Error).name === 'AbortError') throw new ApiError('Request aborted', 0);
+      if ((error as Error).name === 'AbortError')
+        throw new ApiError('Request aborted', 0);
       throw new ApiError((error as Error).message || 'Network error', 0);
     }
   }

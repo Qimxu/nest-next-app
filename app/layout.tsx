@@ -1,12 +1,11 @@
 import './globals.css';
-import { Inter } from 'next/font/google';
 import { Metadata } from 'next';
-
-const inter = Inter({ subsets: ['latin'] });
 
 // 元数据配置
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+  ),
   title: {
     default: 'Nest Next App',
     template: '%s | Nest Next App',
@@ -42,7 +41,7 @@ export default function RootLayout({
         <link rel="icon" href="/static/logo.png" />
         <link rel="apple-touch-icon" href="/static/logo.png" />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className="font-sans">{children}</body>
     </html>
   );
 }
