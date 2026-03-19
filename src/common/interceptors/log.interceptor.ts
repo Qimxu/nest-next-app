@@ -62,9 +62,11 @@ function safeStringify(obj: any, maxLength: number = 500): string {
         seen.add(value);
       }
       // 跳过特殊对象
-      if (value?.constructor?.name === 'Socket' ||
-          value?.constructor?.name === 'ServerResponse' ||
-          value?.constructor?.name === 'IncomingMessage') {
+      if (
+        value?.constructor?.name === 'Socket' ||
+        value?.constructor?.name === 'ServerResponse' ||
+        value?.constructor?.name === 'IncomingMessage'
+      ) {
         return `<${value.constructor.name}>`;
       }
       return value;
@@ -91,9 +93,7 @@ export class LogInterceptor implements NestInterceptor {
     const startTime = Date.now();
 
     // 记录请求
-    this.logger.log(
-      `[${method}] ${url} - [${className}.${handlerName}]`,
-    );
+    this.logger.log(`[${method}] ${url} - [${className}.${handlerName}]`);
 
     return next.handle().pipe(
       tap({

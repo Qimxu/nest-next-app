@@ -14,6 +14,7 @@ import { join } from 'path';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { NextModule } from './modules/next/next.module';
+import { HealthModule } from './modules/health/health.module';
 import { RedisModule, RedisService } from './modules/redis';
 import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
 import { TokenBlacklistInterceptor } from './modules/auth/token-blacklist.interceptor';
@@ -29,8 +30,10 @@ import {
 } from './common/config';
 
 // 加载 YAML 配置
-const env = process.env.NODE_ENV || 'development';
-const configFile = `app.config.${env}.yaml`;
+const nodeEnv = process.env.NODE_ENV || 'development';
+const isTest = nodeEnv === 'test';
+const configEnv = isTest ? 'development' : nodeEnv;
+const configFile = `app.config.${configEnv}.yaml`;
 const configPath = join(process.cwd(), 'config', configFile);
 let yamlConfig: any = {};
 try {
@@ -97,7 +100,8 @@ const globalProviders: Provider[] = [
     RedisModule,
     AuthModule,
     UsersModule,
-    NextModule,
+    HealthModule,
+    ...(isTest ? [] : [NextModule]),
   ],
   providers: globalProviders,
 })
@@ -106,9 +110,6 @@ export class AppModule implements NestModule {
     // 安全中间件应用于所有路由
     consumer.apply(SecurityMiddleware).forRoutes('*');
     // 限流中间件只应用于 API 路由
-    consumer
-      .apply(ThrottleMiddleware)
-      .forRoutes('auth/*', 'users/*');
+    consumer.apply(ThrottleMiddleware).forRoutes('auth/*', 'users/*');
   }
 }
-

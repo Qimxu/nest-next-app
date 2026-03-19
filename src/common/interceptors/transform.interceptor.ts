@@ -13,9 +13,10 @@ import { ApiResponse } from '../interfaces/response.interface';
  * 将所有响应转换为统一格式
  */
 @Injectable()
-export class TransformInterceptor<T>
-  implements NestInterceptor<T, ApiResponse<T>>
-{
+export class TransformInterceptor<T> implements NestInterceptor<
+  T,
+  ApiResponse<T>
+> {
   intercept(
     context: ExecutionContext,
     next: CallHandler,

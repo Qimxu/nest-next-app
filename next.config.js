@@ -22,9 +22,6 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   distDir: '.next',
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   env: {
     API_BASE_URL: config.app?.apiBaseUrl || 'http://localhost:3000',
     NEXT_PUBLIC_API_BASE_URL:

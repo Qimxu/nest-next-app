@@ -6,7 +6,9 @@ import type { INestApplication } from '@nestjs/common';
  */
 export const swaggerConfig = new DocumentBuilder()
   .setTitle('NestJS + Next.js API')
-  .setDescription('API documentation for NestJS + Next.js integrated application')
+  .setDescription(
+    'API documentation for NestJS + Next.js integrated application',
+  )
   .setVersion('1.0')
   .addTag('auth', 'Authentication endpoints')
   .addTag('users', 'User management endpoints')

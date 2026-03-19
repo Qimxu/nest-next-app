@@ -69,7 +69,11 @@ export function sanitizeInput(
     maxLength?: number; // 最大长度，默认不限制
   } = {},
 ): string {
-  const { escapeHtml: shouldEscape = true, stripTags = true, maxLength } = options;
+  const {
+    escapeHtml: shouldEscape = true,
+    stripTags = true,
+    maxLength,
+  } = options;
 
   if (!input || typeof input !== 'string') {
     return '';

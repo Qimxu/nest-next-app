@@ -75,11 +75,23 @@ export default function HomePage() {
               <div className="px-4 py-5 sm:p-6">
                 <div className="flex items-center mb-3">
                   <div className="flex-shrink-0 bg-blue-100 rounded-md p-3">
-                    <svg className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    <svg
+                      className="h-6 w-6 text-blue-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                      />
                     </svg>
                   </div>
-                  <h3 className="ml-4 text-lg font-medium text-gray-900">{t('home.userManagement')}</h3>
+                  <h3 className="ml-4 text-lg font-medium text-gray-900">
+                    {t('home.userManagement')}
+                  </h3>
                 </div>
                 <p className="mt-2 text-sm text-gray-500">
                   {t('home.userManagementDesc')}

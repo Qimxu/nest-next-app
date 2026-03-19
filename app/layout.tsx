@@ -6,7 +6,9 @@ const inter = Inter({ subsets: ['latin'] });
 
 // 元数据配置
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+  ),
   title: {
     default: 'Nest Next App',
     template: '%s | Nest Next App',
