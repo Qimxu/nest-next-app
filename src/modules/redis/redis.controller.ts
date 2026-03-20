@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Public } from '@/core/decorators';
 import { RedisService } from './redis.service';
 
 @ApiTags('redis')
@@ -8,6 +9,7 @@ export class RedisController {
   constructor(private readonly redisService: RedisService) {}
 
   @Get('test')
+  @Public()
   @ApiOperation({ summary: 'Test Redis connection' })
   @ApiResponse({ status: 200, description: 'Redis connection status' })
   async testRedis() {

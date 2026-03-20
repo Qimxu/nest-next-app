@@ -4,7 +4,7 @@
 
 // ============ 配置 ============
 export const API_CONFIG = {
-  baseURL: typeof window !== 'undefined' ? '/api' : 'http://localhost:3000/api',
+  baseURL: typeof window !== 'undefined' ? '' : 'http://localhost:3000',
   timeout: 30000,
   headers: { 'Content-Type': 'application/json' },
 };
@@ -128,16 +128,29 @@ class HttpClient {
           }),
         );
       }
-      throw new ApiError('Unauthorized', 401, data.data);
+      // 保留后端返回的错误码 (INVALID_CREDENTIALS, ACCOUNT_DISABLED 等)
+      const error = new ApiError(
+        data.message || 'Unauthorized',
+        401,
+        data.data,
+      );
+      (error as any).code = data.data;
+      throw error;
     }
-    if (!response.ok)
-      throw new ApiError(
+    if (!response.ok) {
+      const error = new ApiError(
         data.message || `HTTP ${response.status}`,
         response.status,
         data.data,
       );
-    if (data.code >= 400)
-      throw new ApiError(data.message, data.code, data.data);
+      (error as any).code = data.data;
+      throw error;
+    }
+    if (data.code >= 400) {
+      const error = new ApiError(data.message, data.code, data.data);
+      (error as any).code = data.data;
+      throw error;
+    }
     return data;
   }
 

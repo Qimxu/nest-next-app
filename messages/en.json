@@ -67,8 +67,15 @@
     "sending": "Sending...",
     "resendEmail": "Resend email",
     "resetStep1": "Open your email inbox",
-    "resetStep2": "Click the reset link (valid for 30 min)",
+    "resetStep2": "Click the reset link (valid for 1 hour)",
     "resetStep3": "Set a new password and sign in",
+    "verifyingToken": "Verifying link...",
+    "resetSuccess": "Password Reset Successful",
+    "resetSuccessDesc": "Your password has been successfully reset. Please sign in with your new password.",
+    "resetPassword": "Reset Password",
+    "resetPasswordTitle": "Set New Password",
+    "resetPasswordDesc": "Set a new password for {email}",
+    "newPassword": "New Password",
     "agreeTerms": "I agree to the",
     "termsOfService": "Terms of Service",
     "privacyPolicy": "Privacy Policy",
@@ -107,7 +114,10 @@
     "unauthorized": "You are not authorized. Please login.",
     "forbidden": "Access denied",
     "notFound": "Resource not found",
-    "serverError": "Server error. Please try again later."
+    "serverError": "Server error. Please try again later.",
+    "invalidToken": "Invalid or expired link",
+    "INVALID_CREDENTIALS": "Invalid email or password",
+    "ACCOUNT_DISABLED": "Account has been disabled"
   },
   "home": {
     "badge": "Full-Stack Template · NestJS × Next.js",
@@ -115,6 +125,72 @@
     "titleHighlight": "Complete Solution",
     "description": "An enterprise-grade full-stack template integrating NestJS backend and Next.js frontend, with built-in authentication, caching, and internationalization.",
     "techStack": "Tech Stack",
+    "coreFeatures": {
+      "badge": "Framework Highlights",
+      "title": "Why NestNext",
+      "subtitle": "What Next.js can't do, NestNext makes it possible",
+      "singleProcess": {
+        "title": "Break Through API Routes Limit",
+        "description": "Next.js API Routes are just serverless functions, cannot use Node service layer capabilities",
+        "highlight": "Full Node Service · Beyond Serverless Limits",
+        "problem": "Next.js API Routes cannot run scheduled tasks, Redis cache, message queues, WebSocket and other Node services",
+        "solution": "NestJS provides complete Node service layer, supporting scheduled tasks, caching, message queues and enterprise capabilities"
+      },
+      "ssrAuth": {
+        "title": "True Server-Side Capabilities",
+        "description": "Next.js Middleware cannot access database, API Routes cannot run persistently",
+        "highlight": "Persistent Service · Data Persistence",
+        "problem": "Next.js serverless architecture cannot implement data caching, session persistence, scheduled tasks and other continuous services",
+        "solution": "NestJS as a resident service supports Redis caching, database connection pools, scheduled task scheduling"
+      },
+      "uiComponents": {
+        "title": "Enterprise Infrastructure",
+        "description": "Building backend infrastructure from scratch is costly, Next.js doesn't provide out-of-the-box solutions",
+        "highlight": "Out-of-the-box · Enterprise Architecture",
+        "problem": "Next.js requires integrating database, cache, auth, log monitoring and all backend infrastructure yourself",
+        "solution": "Built-in TypeORM, Redis, Winston logging, Swagger docs, JWT auth and other complete infrastructure"
+      },
+      "fullStack": {
+        "title": "Unified Deployment Solution",
+        "description": "Frontend-backend separation deployment is complex, Next.js full-stack requires maintaining multiple services",
+        "highlight": "Single Process Deployment · Simplified DevOps",
+        "problem": "Next.js requires separate backend service deployment, increasing operation complexity and server costs",
+        "solution": "NestJS + Next.js single process, one port, one service, one deployment for full-stack"
+      }
+    },
+    "codeExamples": {
+      "title": "Code Examples",
+      "subtitle": "Clean and elegant API design for efficient development",
+      "ssrAuth": {
+        "title": "SSR Auth Get User"
+      },
+      "passwordToggle": {
+        "title": "Password Visibility Toggle"
+      },
+      "apiResponse": {
+        "title": "Unified API Response"
+      }
+    },
+    "showcases": {
+      "title": "UI Showcase",
+      "subtitle": "Carefully designed interaction details that enhance user experience",
+      "passwordInput": {
+        "title": "Password Input",
+        "description": "Click eye icon to toggle visibility"
+      },
+      "resetPassword": {
+        "title": "Reset Password Flow",
+        "description": "Complete email verification & token validation"
+      },
+      "i18nRoutes": {
+        "title": "i18n Routes",
+        "description": "/zh/login /en/login auto switch"
+      },
+      "responsiveDesign": {
+        "title": "Responsive Design",
+        "description": "Perfect fit for desktop and mobile"
+      }
+    },
     "features": {
       "title": "Core Features",
       "subtitle": "Enterprise-grade features out of the box, so you can focus on business logic",

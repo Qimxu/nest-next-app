@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
 import { useState } from 'react';
-import { Navbar } from '@/lib/components/Navbar';
+import { authApi } from '@/services/auth';
 
 type PageState = 'form' | 'success';
 
@@ -15,6 +15,8 @@ export default function ForgotPasswordPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [pageState, setPageState] = useState<PageState>('form');
+  const [resetUrl, setResetUrl] = useState<string | null>(null);
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,11 +24,12 @@ export default function ForgotPasswordPage() {
     setIsLoading(true);
 
     try {
-      // TODO: 调用后端重置密码 API
-      // await authApi.forgotPassword({ email });
-
-      // 模拟请求延迟
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      const result = await authApi.forgotPassword({ email });
+      // 根据当前 locale 构建完整的重置密码 URL
+      if (result.token) {
+        const fullResetUrl = `${baseUrl}/${locale}/reset-password?token=${result.token}`;
+        setResetUrl(fullResetUrl);
+      }
       setPageState('success');
     } catch (err: unknown) {
       const errorMessage =
@@ -48,9 +51,6 @@ export default function ForgotPasswordPage() {
         {/* Purple orb — bottom right */}
         <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#a855f7]/10 rounded-full blur-3xl" />
       </div>
-
-      {/* Navigation */}
-      <Navbar />
 
       {/* Main Content */}
       <div className="relative z-10 min-h-screen flex items-center justify-center px-6 pt-20 pb-12">
@@ -237,6 +237,40 @@ export default function ForgotPasswordPage() {
                 <p className="text-gray-300 leading-relaxed text-sm">
                   {t('auth.resetLinkSentDesc', { email })}
                 </p>
+
+                {/* Reset Link */}
+                {resetUrl && (
+                  <div className="mt-4 p-4 bg-[#38bdf8]/10 border border-[#38bdf8]/30 rounded-xl">
+                    <p className="text-xs text-[#7dd3fc] mb-2">
+                      点击以下链接重置密码：
+                    </p>
+                    <a
+                      href={resetUrl}
+                      className="text-sm text-[#38bdf8] hover:text-[#7dd3fc] break-all underline underline-offset-2 transition-colors"
+                    >
+                      {resetUrl}
+                    </a>
+                    <button
+                      onClick={() => navigator.clipboard.writeText(resetUrl)}
+                      className="mt-3 w-full py-2 px-4 bg-[#38bdf8]/20 hover:bg-[#38bdf8]/30 text-[#38bdf8] text-sm rounded-lg transition-colors flex items-center justify-center gap-2"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={1.5}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5"
+                        />
+                      </svg>
+                      复制链接
+                    </button>
+                  </div>
+                )}
 
                 {/* Steps hint */}
                 <div className="mt-4 pt-4 border-t border-white/5 space-y-2">

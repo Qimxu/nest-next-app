@@ -59,11 +59,17 @@ export class AuthService {
   async login(loginDto: LoginDto) {
     const user = await this.usersService.findByEmail(loginDto.email, true);
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException({
+        message: '账号或密码不存在',
+        code: 'INVALID_CREDENTIALS',
+      });
     }
 
     if (!user.isActive) {
-      throw new UnauthorizedException('Account is disabled');
+      throw new UnauthorizedException({
+        message: '账号已被禁用',
+        code: 'ACCOUNT_DISABLED',
+      });
     }
 
     const isPasswordValid = await this.validatePassword(
@@ -71,7 +77,10 @@ export class AuthService {
       user.password,
     );
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException({
+        message: '账号或密码不存在',
+        code: 'INVALID_CREDENTIALS',
+      });
     }
 
     return this.generateTokens(user);
@@ -196,5 +205,90 @@ export class AuthService {
   // 检查 token 是否在黑名单中
   async isTokenBlacklisted(token: string): Promise<boolean> {
     return this.redisService.exists(`${this.TOKEN_BLACKLIST_PREFIX}${token}`);
+  }
+
+  // ========== 忘记密码功能 ==========
+
+  private readonly RESET_TOKEN_PREFIX = 'password_reset:';
+  private readonly RESET_TOKEN_EXPIRY = 3600; // 1 hour in seconds
+
+  /**
+   * 生成密码重置令牌
+   */
+  async generatePasswordResetToken(
+    email: string,
+  ): Promise<{ token: string; resetUrl: string } | null> {
+    const user = await this.usersService.findByEmail(email);
+    if (!user) {
+      // 为了安全，不暴露邮箱是否存在
+      return null;
+    }
+
+    // 生成随机令牌
+    const token = await bcrypt.hash(
+      `${user.id}-${Date.now()}-${Math.random()}`,
+      10,
+    );
+    const cleanToken = token.replace(/[^a-zA-Z0-9]/g, '').substring(0, 64);
+
+    // 存储到 Redis，设置1小时过期
+    await this.redisService.set(
+      `${this.RESET_TOKEN_PREFIX}${cleanToken}`,
+      { userId: user.id, email: user.email },
+      this.RESET_TOKEN_EXPIRY,
+    );
+
+    const baseUrl =
+      this.configService.get('app.apiBaseUrl') || 'http://localhost:3000';
+    const resetUrl = `${baseUrl}/reset-password?token=${cleanToken}`;
+
+    this.logger.log(`Password reset token generated for: ${email}`);
+
+    return { token: cleanToken, resetUrl };
+  }
+
+  /**
+   * 验证密码重置令牌
+   */
+  async validateResetToken(
+    token: string,
+  ): Promise<{ userId: number; email: string } | null> {
+    const data = await this.redisService.get<{ userId: number; email: string }>(
+      `${this.RESET_TOKEN_PREFIX}${token}`,
+    );
+
+    if (!data) {
+      return null;
+    }
+
+    return data;
+  }
+
+  /**
+   * 重置密码
+   */
+  async resetPassword(token: string, newPassword: string): Promise<boolean> {
+    const tokenData = await this.validateResetToken(token);
+    if (!tokenData) {
+      return false;
+    }
+
+    // 哈希新密码
+    const hashedPassword = await this.hashPassword(newPassword);
+
+    // 更新用户密码
+    await this.usersService.updatePassword(tokenData.userId, hashedPassword);
+
+    // 删除重置令牌（使其失效）
+    await this.redisService.del(`${this.RESET_TOKEN_PREFIX}${token}`);
+
+    // 清除该用户的所有 refresh token（强制重新登录）
+    await this.redisService.del(
+      `${this.REFRESH_TOKEN_PREFIX}${tokenData.userId}`,
+    );
+
+    this.logger.log(`Password reset successful for user: ${tokenData.userId}`);
+
+    return true;
   }
 }

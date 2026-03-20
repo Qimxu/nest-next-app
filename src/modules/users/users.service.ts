@@ -26,6 +26,50 @@ export class UsersService {
     });
   }
 
+  async findAllPaginated(
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<{
+    users: User[];
+    pagination: {
+      total: number;
+      page: number;
+      limit: number;
+      totalPages: number;
+      hasNextPage: boolean;
+      hasPrevPage: boolean;
+    };
+  }> {
+    const [users, total] = await this.usersRepository.findAndCount({
+      select: [
+        'id',
+        'name',
+        'email',
+        'role',
+        'isActive',
+        'createdAt',
+        'updatedAt',
+      ],
+      skip: (page - 1) * limit,
+      take: limit,
+      order: { createdAt: 'DESC' },
+    });
+
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      users,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
+      },
+    };
+  }
+
   async findOne(id: number): Promise<User | null> {
     return this.usersRepository.findOne({
       where: { id },
@@ -81,5 +125,23 @@ export class UsersService {
     if (result.affected === 0) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
+  }
+
+  async update(id: number, updateData: Partial<User>): Promise<User> {
+    // 如果更新包含密码，需要哈希处理
+    if (updateData.password) {
+      updateData.password = await bcrypt.hash(updateData.password, 10);
+    }
+
+    await this.usersRepository.update(id, updateData);
+    const updatedUser = await this.findOne(id);
+    if (!updatedUser) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return updatedUser;
+  }
+
+  async updatePassword(id: number, hashedPassword: string): Promise<void> {
+    await this.usersRepository.update(id, { password: hashedPassword });
   }
 }

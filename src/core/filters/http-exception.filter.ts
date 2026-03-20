@@ -35,8 +35,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
         message = exceptionResponse;
       } else if (typeof exceptionResponse === 'object') {
         const responseObj = exceptionResponse as any;
+        // 支持 { message, code } 格式的错误响应
         message = responseObj.message || exception.message;
-        details = responseObj.details || null;
+        details = responseObj.code || responseObj.details || null;
 
         // 处理 class-validator 的验证错误
         if (Array.isArray(responseObj.message)) {

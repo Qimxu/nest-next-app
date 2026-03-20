@@ -20,8 +20,9 @@ COPY --from=build /app/package.json /app/package-lock.json ./
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/.next ./.next
-COPY --from=build /app/public ./public
 COPY --from=build /app/config ./config
+COPY --from=build /app/messages ./messages
+COPY --from=build /app/static ./static
 
 USER nextjs
 EXPOSE 3000

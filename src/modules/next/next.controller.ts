@@ -1,6 +1,7 @@
 import { Controller, All, Req, Res } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
 import { NextService } from './next.service';
+import { Public } from '@/core/decorators';
 import type { Request, Response } from 'express';
 
 /**
@@ -20,6 +21,7 @@ export class NextController {
    * 兜底路由 - 处理所有其他请求 (页面、国际化路由等)
    */
   @All('*')
+  @Public()
   async handleRouter(
     @Req() req: Request,
     @Res({ passthrough: false }) res: Response,
