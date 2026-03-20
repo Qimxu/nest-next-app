@@ -125,6 +125,64 @@
     "titleHighlight": "Complete Solution",
     "description": "An enterprise-grade full-stack template integrating NestJS backend and Next.js frontend, with built-in authentication, caching, and internationalization.",
     "techStack": "Tech Stack",
+    "coreFeatures": {
+      "badge": "Framework Highlights",
+      "title": "Why NestNext",
+      "subtitle": "A distinctive full-stack development experience that solves real-world pain points",
+      "singleProcess": {
+        "title": "Single Process Architecture",
+        "description": "NestJS hosts Next.js, both running on port 3000. No need to start frontend and backend separately.",
+        "highlight": "Unified Port 3000 · Simplified Deployment"
+      },
+      "ssrAuth": {
+        "title": "SSR Flicker-Free Auth",
+        "description": "Server-side JWT cookie parsing to get user info instantly. First render without Loading state.",
+        "highlight": "getServerFullUser() · First Paint Ready"
+      },
+      "uiComponents": {
+        "title": "Polished UI Components",
+        "description": "Built-in password visibility toggle, form validation, responsive layouts and more common interactions.",
+        "highlight": "Password Eye Toggle · Ready to Use"
+      },
+      "fullStack": {
+        "title": "Complete Feature Chain",
+        "description": "Full Login/Register/Forgot Password/Reset Password flow with unified API response format.",
+        "highlight": "Complete Auth Flow · Unified Response"
+      }
+    },
+    "codeExamples": {
+      "title": "Code Examples",
+      "subtitle": "Clean and elegant API design for efficient development",
+      "ssrAuth": {
+        "title": "SSR Auth Get User"
+      },
+      "passwordToggle": {
+        "title": "Password Visibility Toggle"
+      },
+      "apiResponse": {
+        "title": "Unified API Response"
+      }
+    },
+    "showcases": {
+      "title": "UI Showcase",
+      "subtitle": "Carefully designed interaction details that enhance user experience",
+      "passwordInput": {
+        "title": "Password Input",
+        "description": "Click eye icon to toggle visibility"
+      },
+      "resetPassword": {
+        "title": "Reset Password Flow",
+        "description": "Complete email verification & token validation"
+      },
+      "i18nRoutes": {
+        "title": "i18n Routes",
+        "description": "/zh/login /en/login auto switch"
+      },
+      "responsiveDesign": {
+        "title": "Responsive Design",
+        "description": "Perfect fit for desktop and mobile"
+      }
+    },
     "features": {
       "title": "Core Features",
       "subtitle": "Enterprise-grade features out of the box, so you can focus on business logic",

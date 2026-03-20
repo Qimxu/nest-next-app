@@ -125,6 +125,64 @@
     "titleHighlight": "完整解决方案",
     "description": "一套集成 NestJS 后端与 Next.js 前端的企业级全栈模板，内置认证、缓存与国际化支持。",
     "techStack": "技术栈",
+    "coreFeatures": {
+      "badge": "框架特色",
+      "title": "为什么选择 NestNext",
+      "subtitle": "与众不同的全栈开发体验，解决实际开发痛点",
+      "singleProcess": {
+        "title": "单进程架构",
+        "description": "NestJS 托管 Next.js，统一运行在 3000 端口，无需分别启动前后端服务",
+        "highlight": "统一端口 3000 · 简化部署"
+      },
+      "ssrAuth": {
+        "title": "SSR 无闪烁认证",
+        "description": "服务端直接解析 JWT Cookie 获取用户信息，首屏无需 Loading 状态",
+        "highlight": "getServerFullUser() · 首屏即渲染"
+      },
+      "uiComponents": {
+        "title": "精致 UI 组件",
+        "description": "内置密码显示/隐藏切换、表单验证、响应式布局等常用交互组件",
+        "highlight": "小眼睛密码切换 · 开箱即用"
+      },
+      "fullStack": {
+        "title": "完整功能链路",
+        "description": "登录/注册/忘记密码/重置密码完整流程，API 响应统一格式封装",
+        "highlight": "完整认证链路 · 统一响应格式"
+      }
+    },
+    "codeExamples": {
+      "title": "代码示例",
+      "subtitle": "简洁优雅的 API 设计，让开发更高效",
+      "ssrAuth": {
+        "title": "SSR 认证获取用户"
+      },
+      "passwordToggle": {
+        "title": "密码显示隐藏切换"
+      },
+      "apiResponse": {
+        "title": "统一 API 响应"
+      }
+    },
+    "showcases": {
+      "title": "UI 展示",
+      "subtitle": "精心设计的交互细节，提升用户体验",
+      "passwordInput": {
+        "title": "密码输入框",
+        "description": "点击小眼睛图标切换显示/隐藏"
+      },
+      "resetPassword": {
+        "title": "重置密码流程",
+        "description": "完整的邮件验证与 token 验证"
+      },
+      "i18nRoutes": {
+        "title": "多语言路由",
+        "description": "/zh/login /en/login 自动切换"
+      },
+      "responsiveDesign": {
+        "title": "响应式设计",
+        "description": "完美适配桌面端和移动端"
+      }
+    },
     "features": {
       "title": "核心特性",
       "subtitle": "开箱即用的企业级功能，让您专注于业务开发",

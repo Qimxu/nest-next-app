@@ -64,14 +64,16 @@ export function Navbar() {
           href={`/${currentLocale}`}
           className="flex items-center gap-3 group"
         >
-          <Image
-            src="/static/logo.png"
-            alt="Logo"
-            width={32}
-            height={32}
-            className="transition-all duration-300 group-hover:drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]"
-            priority
-          />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#a855f7]/20 to-[#38bdf8]/20 border border-[#a855f7]/30 flex items-center justify-center group-hover:border-[#a855f7]/60 transition-all duration-300">
+            <Image
+              src="/static/logo.png"
+              alt="Logo"
+              width={24}
+              height={24}
+              className="transition-all duration-300 group-hover:scale-110"
+              priority
+            />
+          </div>
           <span className="font-['Orbitron'] font-bold text-lg tracking-wider">
             <span className="text-[#a855f7]">NEST</span>
             <span className="text-[#38bdf8]">NEXT</span>
