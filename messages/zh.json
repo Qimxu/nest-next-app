@@ -128,26 +128,34 @@
     "coreFeatures": {
       "badge": "框架特色",
       "title": "为什么选择 NestNext",
-      "subtitle": "与众不同的全栈开发体验，解决实际开发痛点",
+      "subtitle": "Next.js 无法做到的，NestNext 帮你实现",
       "singleProcess": {
-        "title": "单进程架构",
-        "description": "NestJS 托管 Next.js，统一运行在 3000 端口，无需分别启动前后端服务",
-        "highlight": "统一端口 3000 · 简化部署"
+        "title": "突破 API Routes 限制",
+        "description": "Next.js API Routes 只是无服务器函数，无法使用 Node 服务层能力",
+        "highlight": "完整 Node 服务 · 超越无服务器限制",
+        "problem": "Next.js API Routes 无法运行定时任务、Redis 缓存、队列、WebSocket 等 Node 服务",
+        "solution": "NestJS 提供完整 Node 服务层，支持定时任务、缓存、消息队列等企业级能力"
       },
       "ssrAuth": {
-        "title": "SSR 无闪烁认证",
-        "description": "服务端直接解析 JWT Cookie 获取用户信息，首屏无需 Loading 状态",
-        "highlight": "getServerFullUser() · 首屏即渲染"
+        "title": "真正的服务端能力",
+        "description": "Next.js 的 Middleware 无法访问数据库，API Routes 无法持续运行",
+        "highlight": "持久服务 · 数据持久化",
+        "problem": "Next.js 无服务器架构无法实现数据缓存、会话保持、定时任务等持续化服务",
+        "solution": "NestJS 作为常驻服务，支持 Redis 缓存、数据库连接池、定时任务调度"
       },
       "uiComponents": {
-        "title": "精致 UI 组件",
-        "description": "内置密码显示/隐藏切换、表单验证、响应式布局等常用交互组件",
-        "highlight": "小眼睛密码切换 · 开箱即用"
+        "title": "企业级基础设施",
+        "description": "从零搭建后端基础设施成本高，Next.js 不提供开箱即用的解决方案",
+        "highlight": "开箱即用 · 企业级架构",
+        "problem": "Next.js 需要自行集成数据库、缓存、认证、日志监控等所有后端基础设施",
+        "solution": "内置 TypeORM、Redis、Winston 日志、Swagger 文档、JWT 认证等完整基础设施"
       },
       "fullStack": {
-        "title": "完整功能链路",
-        "description": "登录/注册/忘记密码/重置密码完整流程，API 响应统一格式封装",
-        "highlight": "完整认证链路 · 统一响应格式"
+        "title": "一体化部署方案",
+        "description": "前后端分离部署复杂，Next.js 全栈方案需要维护多个服务",
+        "highlight": "单进程部署 · 简化运维",
+        "problem": "Next.js 需要单独部署后端服务，增加运维复杂度和服务器成本",
+        "solution": "NestJS + Next.js 单进程运行，一个端口、一个服务、一次部署搞定全栈"
       }
     },
     "codeExamples": {

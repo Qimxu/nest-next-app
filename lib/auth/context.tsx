@@ -66,6 +66,8 @@ export function AuthProvider({ children, initialUser }: AuthProviderProps) {
     setIsLoading(true);
     try {
       await authApi.logout();
+    } catch {
+      // Token 可能已过期，忽略错误继续清理
     } finally {
       tokenManager.clearTokens();
       setUser(null);

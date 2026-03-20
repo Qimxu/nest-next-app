@@ -128,26 +128,34 @@
     "coreFeatures": {
       "badge": "Framework Highlights",
       "title": "Why NestNext",
-      "subtitle": "A distinctive full-stack development experience that solves real-world pain points",
+      "subtitle": "What Next.js can't do, NestNext makes it possible",
       "singleProcess": {
-        "title": "Single Process Architecture",
-        "description": "NestJS hosts Next.js, both running on port 3000. No need to start frontend and backend separately.",
-        "highlight": "Unified Port 3000 · Simplified Deployment"
+        "title": "Break Through API Routes Limit",
+        "description": "Next.js API Routes are just serverless functions, cannot use Node service layer capabilities",
+        "highlight": "Full Node Service · Beyond Serverless Limits",
+        "problem": "Next.js API Routes cannot run scheduled tasks, Redis cache, message queues, WebSocket and other Node services",
+        "solution": "NestJS provides complete Node service layer, supporting scheduled tasks, caching, message queues and enterprise capabilities"
       },
       "ssrAuth": {
-        "title": "SSR Flicker-Free Auth",
-        "description": "Server-side JWT cookie parsing to get user info instantly. First render without Loading state.",
-        "highlight": "getServerFullUser() · First Paint Ready"
+        "title": "True Server-Side Capabilities",
+        "description": "Next.js Middleware cannot access database, API Routes cannot run persistently",
+        "highlight": "Persistent Service · Data Persistence",
+        "problem": "Next.js serverless architecture cannot implement data caching, session persistence, scheduled tasks and other continuous services",
+        "solution": "NestJS as a resident service supports Redis caching, database connection pools, scheduled task scheduling"
       },
       "uiComponents": {
-        "title": "Polished UI Components",
-        "description": "Built-in password visibility toggle, form validation, responsive layouts and more common interactions.",
-        "highlight": "Password Eye Toggle · Ready to Use"
+        "title": "Enterprise Infrastructure",
+        "description": "Building backend infrastructure from scratch is costly, Next.js doesn't provide out-of-the-box solutions",
+        "highlight": "Out-of-the-box · Enterprise Architecture",
+        "problem": "Next.js requires integrating database, cache, auth, log monitoring and all backend infrastructure yourself",
+        "solution": "Built-in TypeORM, Redis, Winston logging, Swagger docs, JWT auth and other complete infrastructure"
       },
       "fullStack": {
-        "title": "Complete Feature Chain",
-        "description": "Full Login/Register/Forgot Password/Reset Password flow with unified API response format.",
-        "highlight": "Complete Auth Flow · Unified Response"
+        "title": "Unified Deployment Solution",
+        "description": "Frontend-backend separation deployment is complex, Next.js full-stack requires maintaining multiple services",
+        "highlight": "Single Process Deployment · Simplified DevOps",
+        "problem": "Next.js requires separate backend service deployment, increasing operation complexity and server costs",
+        "solution": "NestJS + Next.js single process, one port, one service, one deployment for full-stack"
       }
     },
     "codeExamples": {

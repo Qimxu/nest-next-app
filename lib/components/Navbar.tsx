@@ -40,9 +40,13 @@ export function Navbar() {
   }, []);
 
   const handleLogout = async () => {
-    await logout();
-    setIsUserOpen(false);
-    router.push(`/${currentLocale}`);
+    try {
+      await logout();
+    } finally {
+      setIsUserOpen(false);
+      // 刷新页面确保所有状态被清理
+      router.refresh();
+    }
   };
 
   const handleLocaleChange = (newLocale: Locale) => {

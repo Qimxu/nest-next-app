@@ -20,24 +20,32 @@ export default function HomePage() {
       title: t('home.coreFeatures.singleProcess.title'),
       description: t('home.coreFeatures.singleProcess.description'),
       highlight: t('home.coreFeatures.singleProcess.highlight'),
+      problem: t('home.coreFeatures.singleProcess.problem'),
+      solution: t('home.coreFeatures.singleProcess.solution'),
     },
     {
       icon: '🔐',
       title: t('home.coreFeatures.ssrAuth.title'),
       description: t('home.coreFeatures.ssrAuth.description'),
       highlight: t('home.coreFeatures.ssrAuth.highlight'),
+      problem: t('home.coreFeatures.ssrAuth.problem'),
+      solution: t('home.coreFeatures.ssrAuth.solution'),
     },
     {
       icon: '🎨',
       title: t('home.coreFeatures.uiComponents.title'),
       description: t('home.coreFeatures.uiComponents.description'),
       highlight: t('home.coreFeatures.uiComponents.highlight'),
+      problem: t('home.coreFeatures.uiComponents.problem'),
+      solution: t('home.coreFeatures.uiComponents.solution'),
     },
     {
       icon: '⚡',
       title: t('home.coreFeatures.fullStack.title'),
       description: t('home.coreFeatures.fullStack.description'),
       highlight: t('home.coreFeatures.fullStack.highlight'),
+      problem: t('home.coreFeatures.fullStack.problem'),
+      solution: t('home.coreFeatures.fullStack.solution'),
     },
   ];
 
@@ -264,9 +272,26 @@ const [showPassword, setShowPassword] = useState(false);
                     <h3 className="text-xl font-semibold mb-2 text-white group-hover:text-[#a855f7] transition-colors">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-400 leading-relaxed mb-3">
+                    <p className="text-gray-400 leading-relaxed mb-4">
                       {feature.description}
                     </p>
+                    {/* Problem vs Solution */}
+                    <div className="space-y-3 mb-4">
+                      <div className="flex items-start gap-2 text-sm">
+                        <span className="text-red-400 font-medium flex-shrink-0">
+                          问题:
+                        </span>
+                        <span className="text-gray-500">{feature.problem}</span>
+                      </div>
+                      <div className="flex items-start gap-2 text-sm">
+                        <span className="text-green-400 font-medium flex-shrink-0">
+                          解决:
+                        </span>
+                        <span className="text-gray-500">
+                          {feature.solution}
+                        </span>
+                      </div>
+                    </div>
                     <div className="flex items-center gap-2 text-sm text-[#38bdf8]">
                       <svg
                         className="w-4 h-4"
