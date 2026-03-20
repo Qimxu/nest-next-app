@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
+import { useAuth } from '@/lib/auth/context';
 import {
   locales,
   localeNames,
@@ -14,12 +15,15 @@ import {
 
 export function Navbar() {
   const [isLangOpen, setIsLangOpen] = useState(false);
+  const [isUserOpen, setIsUserOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
+  const userRef = useRef<HTMLDivElement>(null);
 
   const currentLocale = useLocale();
   const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
+  const { user, isAuthenticated, logout } = useAuth();
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -27,10 +31,19 @@ export function Navbar() {
       if (langRef.current && !langRef.current.contains(event.target as Node)) {
         setIsLangOpen(false);
       }
+      if (userRef.current && !userRef.current.contains(event.target as Node)) {
+        setIsUserOpen(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const handleLogout = async () => {
+    await logout();
+    setIsUserOpen(false);
+    router.push(`/${currentLocale}`);
+  };
 
   const handleLocaleChange = (newLocale: Locale) => {
     const segments = pathname.split('/');
@@ -139,26 +152,90 @@ export function Navbar() {
             )}
           </div>
 
-          {/* Login Button */}
-          <Link
-            href={`/${currentLocale}/login`}
-            className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 hover:border-[#38bdf8]/40 rounded-lg transition-all hover:bg-white/10 text-sm text-gray-300 hover:text-white"
-          >
-            <svg
-              className="w-4 h-4 text-gray-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={1.5}
+          {/* User / Login */}
+          {isAuthenticated && user ? (
+            <div ref={userRef} className="relative">
+              <button
+                onClick={() => setIsUserOpen(!isUserOpen)}
+                className="flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors bg-white/5 border border-white/10 hover:border-[#a855f7]/40 rounded-lg"
+              >
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#a855f7] to-[#38bdf8] flex items-center justify-center text-white font-medium text-xs">
+                  {user.name?.charAt(0).toUpperCase() ||
+                    user.email?.charAt(0).toUpperCase() ||
+                    'U'}
+                </div>
+                <span className="font-medium max-w-[100px] truncate hidden sm:block">
+                  {user.name || user.email}
+                </span>
+                <svg
+                  className={`w-3 h-3 transition-transform duration-200 ${isUserOpen ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+
+              {/* User Dropdown Menu */}
+              {isUserOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-[#0d0b14] border border-white/10 rounded-lg overflow-hidden shadow-xl shadow-black/50 animate-fade-in-up">
+                  <div className="px-4 py-3 border-b border-white/5">
+                    <p className="text-sm font-medium text-white truncate">
+                      {user.name || user.email}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate">
+                      {user.email}
+                    </p>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full px-4 py-2.5 text-left text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+                      />
+                    </svg>
+                    {t('nav.logout')}
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link
+              href={`/${currentLocale}/login`}
+              className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 hover:border-[#38bdf8]/40 rounded-lg transition-all hover:bg-white/10 text-sm text-gray-300 hover:text-white"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-              />
-            </svg>
-            {t('nav.login')}
-          </Link>
+              <svg
+                className="w-4 h-4 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                />
+              </svg>
+              {t('nav.login')}
+            </Link>
+          )}
         </div>
       </div>
     </nav>

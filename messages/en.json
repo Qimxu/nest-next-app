@@ -67,8 +67,15 @@
     "sending": "Sending...",
     "resendEmail": "Resend email",
     "resetStep1": "Open your email inbox",
-    "resetStep2": "Click the reset link (valid for 30 min)",
+    "resetStep2": "Click the reset link (valid for 1 hour)",
     "resetStep3": "Set a new password and sign in",
+    "verifyingToken": "Verifying link...",
+    "resetSuccess": "Password Reset Successful",
+    "resetSuccessDesc": "Your password has been successfully reset. Please sign in with your new password.",
+    "resetPassword": "Reset Password",
+    "resetPasswordTitle": "Set New Password",
+    "resetPasswordDesc": "Set a new password for {email}",
+    "newPassword": "New Password",
     "agreeTerms": "I agree to the",
     "termsOfService": "Terms of Service",
     "privacyPolicy": "Privacy Policy",
@@ -107,7 +114,10 @@
     "unauthorized": "You are not authorized. Please login.",
     "forbidden": "Access denied",
     "notFound": "Resource not found",
-    "serverError": "Server error. Please try again later."
+    "serverError": "Server error. Please try again later.",
+    "invalidToken": "Invalid or expired link",
+    "INVALID_CREDENTIALS": "Invalid email or password",
+    "ACCOUNT_DISABLED": "Account has been disabled"
   },
   "home": {
     "badge": "Full-Stack Template · NestJS × Next.js",

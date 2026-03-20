@@ -7,6 +7,8 @@ import {
   HttpStatus,
   Request,
   Response,
+  Logger,
+  UnauthorizedException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -16,14 +18,24 @@ import {
   ApiHeader,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { LoginDto, RegisterDto, RefreshTokenDto } from './dto';
+import {
+  LoginDto,
+  RegisterDto,
+  RefreshTokenDto,
+  ForgotPasswordDto,
+  ResetPasswordDto,
+  VerifyResetTokenDto,
+} from './dto';
+import { Public } from '@/core/decorators';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
+  private readonly logger = new Logger(AuthController.name);
   constructor(private authService: AuthService) {}
 
   @Post('register')
+  @Public()
   @ApiOperation({ summary: 'Register a new user' })
   @ApiResponse({ status: 201, description: 'User successfully registered' })
   @ApiResponse({ status: 400, description: 'Invalid input data' })
@@ -38,6 +50,7 @@ export class AuthController {
   }
 
   @Post('login')
+  @Public()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login with email and password' })
   @ApiResponse({ status: 200, description: 'Successfully logged in' })
@@ -52,6 +65,7 @@ export class AuthController {
   }
 
   @Post('refresh')
+  @Public()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Refresh access token' })
   @ApiResponse({ status: 200, description: 'Token successfully refreshed' })
@@ -122,5 +136,91 @@ export class AuthController {
   private clearAuthCookies(res: any) {
     res.clearCookie('access_token', { path: '/' });
     res.clearCookie('refresh_token', { path: '/' });
+  }
+
+  // ========== 忘记密码端点 ==========
+
+  @Post('forgot-password')
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Request password reset' })
+  @ApiResponse({
+    status: 200,
+    description: 'Reset email sent if account exists',
+  })
+  @ApiResponse({ status: 400, description: 'Invalid email format' })
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    const result = await this.authService.generatePasswordResetToken(
+      forgotPasswordDto.email,
+    );
+
+    // 为了安全，无论邮箱是否存在都返回相同消息
+    // 实际生产环境应该发送邮件，这里返回重置 URL（仅用于开发测试）
+    if (result) {
+      // TODO: 集成邮件服务发送重置链接
+      // await this.mailService.sendPasswordReset(forgotPasswordDto.email, result.resetUrl);
+      this.logger.log(`Password reset URL: ${result.resetUrl}`);
+
+      // 只返回 token，前端根据当前 locale 构建完整 URL
+      return {
+        success: true,
+        message: 'Password reset link generated successfully',
+        token: result.token,
+      };
+    }
+
+    // 邮箱不存在时也返回相同格式，避免枚举攻击
+    return {
+      success: true,
+      message:
+        'If an account with that email exists, a password reset link has been sent',
+      token: '',
+    };
+  }
+
+  @Post('verify-reset-token')
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Verify password reset token' })
+  @ApiResponse({ status: 200, description: 'Token is valid' })
+  @ApiResponse({ status: 400, description: 'Invalid or expired token' })
+  async verifyResetToken(@Body() verifyDto: VerifyResetTokenDto) {
+    const tokenData = await this.authService.validateResetToken(
+      verifyDto.token,
+    );
+
+    if (!tokenData) {
+      throw new UnauthorizedException('Invalid or expired reset token');
+    }
+
+    return {
+      message: 'Token is valid',
+      email: tokenData.email,
+    };
+  }
+
+  @Post('reset-password')
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Reset password with token' })
+  @ApiResponse({ status: 200, description: 'Password reset successful' })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid token or password requirements not met',
+  })
+  async resetPassword(@Body() resetDto: ResetPasswordDto) {
+    const success = await this.authService.resetPassword(
+      resetDto.token,
+      resetDto.newPassword,
+    );
+
+    if (!success) {
+      throw new UnauthorizedException('Invalid or expired reset token');
+    }
+
+    return {
+      message:
+        'Password has been reset successfully. Please login with your new password.',
+    };
   }
 }

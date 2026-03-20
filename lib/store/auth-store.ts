@@ -47,8 +47,12 @@ export const useAuthStore = create<AuthState>()(
           tokenManager.setToken(access_token);
           tokenManager.setRefreshToken(refresh_token);
 
+          // 获取用户信息
+          const user = await authApi.me();
+
           set({
             token: access_token,
+            user,
             isAuthenticated: true,
             isLoading: false,
           });
@@ -123,11 +127,15 @@ export const useAuthStore = create<AuthState>()(
         token: state.token,
         user: state.user,
       }),
-      // 从 localStorage 恢复时同步到 tokenManager
+      // 从 localStorage 恢复时同步到 tokenManager 并获取用户信息
       onRehydrateStorage: () => {
         return (state) => {
           if (state?.token) {
             tokenManager.setToken(state.token);
+            // 页面刷新后自动获取用户信息
+            if (!state.user) {
+              useAuthStore.getState().fetchUser();
+            }
           }
         };
       },

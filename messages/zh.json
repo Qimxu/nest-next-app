@@ -67,8 +67,15 @@
     "sending": "发送中...",
     "resendEmail": "重新发送",
     "resetStep1": "打开您的邮箱",
-    "resetStep2": "点击重置链接（30 分钟内有效）",
+    "resetStep2": "点击重置链接（1 小时内有效）",
     "resetStep3": "设置新密码并登录",
+    "verifyingToken": "正在验证链接...",
+    "resetSuccess": "密码重置成功",
+    "resetSuccessDesc": "您的密码已成功重置，请使用新密码登录。",
+    "resetPassword": "重置密码",
+    "resetPasswordTitle": "设置新密码",
+    "resetPasswordDesc": "为 {email} 设置一个新密码",
+    "newPassword": "新密码",
     "agreeTerms": "我同意",
     "termsOfService": "服务条款",
     "privacyPolicy": "隐私政策",
@@ -107,7 +114,10 @@
     "unauthorized": "未授权，请先登录",
     "forbidden": "访问被拒绝",
     "notFound": "资源未找到",
-    "serverError": "服务器错误，请稍后重试"
+    "serverError": "服务器错误，请稍后重试",
+    "invalidToken": "链接无效或已过期",
+    "INVALID_CREDENTIALS": "账号或密码不存在",
+    "ACCOUNT_DISABLED": "账号已被禁用"
   },
   "home": {
     "badge": "全栈模板 · NestJS × Next.js",

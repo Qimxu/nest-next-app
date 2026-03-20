@@ -24,6 +24,7 @@ import {
   loadYamlConfig,
   validationSchema,
 } from './core/config';
+import { RolesGuard } from './core/guards/roles.guard';
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isTest = nodeEnv === 'test';
@@ -34,6 +35,10 @@ const globalProviders: Provider[] = [
   {
     provide: APP_GUARD,
     useClass: JwtAuthGuard,
+  },
+  {
+    provide: APP_GUARD,
+    useClass: RolesGuard,
   },
   {
     provide: APP_INTERCEPTOR,

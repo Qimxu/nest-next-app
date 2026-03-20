@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
-import { Navbar } from '@/lib/components/Navbar';
-
 export default function HomePage() {
   const [isVisible, setIsVisible] = useState(false);
   const t = useTranslations();
@@ -88,9 +86,6 @@ export default function HomePage() {
         {/* Indigo center orb */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-[#818cf8]/8 rounded-full blur-3xl" />
       </div>
-
-      {/* Navigation */}
-      <Navbar />
 
       {/* Hero Section */}
       <section className="relative z-10 min-h-screen flex items-center justify-center px-6 pt-16">
