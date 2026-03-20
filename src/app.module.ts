@@ -14,6 +14,7 @@ import { RedisService } from './modules/redis';
 import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
 import { TokenBlacklistInterceptor } from './modules/auth/token-blacklist.interceptor';
 import { TransformInterceptor } from './core/interceptors/transform.interceptor';
+import { ThrottleInterceptor } from './core/interceptors/throttle.interceptor';
 import { applyAppMiddlewares } from './middlewares';
 import {
   appConfig,
@@ -33,6 +34,10 @@ const globalProviders: Provider[] = [
   {
     provide: APP_GUARD,
     useClass: JwtAuthGuard,
+  },
+  {
+    provide: APP_INTERCEPTOR,
+    useClass: ThrottleInterceptor,
   },
   {
     provide: APP_INTERCEPTOR,

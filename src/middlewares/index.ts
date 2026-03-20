@@ -1,6 +1,5 @@
 import type { MiddlewareConsumer } from '@nestjs/common';
 import { SecurityMiddleware } from './security.middleware';
-import { ThrottleMiddleware } from './throttle.middleware';
 
 /**
  * Central place to control middleware order.
@@ -10,10 +9,6 @@ export const appMiddlewares = [
   {
     middleware: SecurityMiddleware,
     routes: '*',
-  },
-  {
-    middleware: ThrottleMiddleware,
-    routes: ['auth/*', 'users/*'],
   },
 ] as const;
 

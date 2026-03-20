@@ -2,10 +2,13 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import NotFoundAnimations from './not-found-animations';
+import { useTranslations, useLocale } from 'next-intl';
+import NotFoundAnimations from '../not-found-animations';
 
-export default function NotFound() {
+export default function LocaleNotFound() {
   const [mounted, setMounted] = useState(false);
+  const t = useTranslations('notFound');
+  const locale = useLocale();
 
   useEffect(() => {
     setMounted(true);
@@ -20,7 +23,6 @@ export default function NotFound() {
         <div className="text-center max-w-2xl mx-auto">
           {/* Glitch 404 */}
           <div className="mb-6 relative">
-            {/* Glitch layers */}
             <span
               className="absolute top-0 left-1/2 -translate-x-1/2 -ml-1 text-[6rem] md:text-[10rem] font-black leading-none tracking-tighter text-[#a855f7]/70 opacity-50 animate-glitch-1 select-none font-['Orbitron']"
               aria-hidden="true"
@@ -43,7 +45,7 @@ export default function NotFound() {
             className={`inline-flex items-center px-4 py-2 bg-[#a855f7]/10 border border-[#a855f7]/30 text-[#c4b5fd] text-sm font-medium mb-6 font-['Orbitron'] rounded-lg transition-all duration-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
             <span className="w-2 h-2 bg-[#a855f7] rounded-full mr-2 animate-pulse shadow-[0_0_10px_#a855f7]" />
-            PAGE_NOT_FOUND
+            {t('badge').toUpperCase()}
           </div>
 
           {/* Title */}
@@ -51,7 +53,7 @@ export default function NotFound() {
             className={`text-3xl md:text-4xl font-bold mb-4 font-['Orbitron'] transition-all duration-500 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
             <span className="text-[#a855f7]">&lt;</span>
-            Lost in the Void
+            {t('title')}
             <span className="text-[#38bdf8]">/&gt;</span>
           </h2>
 
@@ -59,15 +61,14 @@ export default function NotFound() {
           <p
             className={`text-gray-400 text-lg mb-10 max-w-md mx-auto leading-relaxed transition-all duration-500 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
-            The page you&apos;re looking for doesn&apos;t exist or has been
-            moved to another dimension.
+            {t('description')}
           </p>
 
           {/* Action Buttons */}
           <div
             className={`flex flex-col sm:flex-row items-center justify-center gap-4 transition-all duration-500 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
           >
-            <Link href="/zh" className="btn-cyber">
+            <Link href={`/${locale}`} className="btn-cyber">
               <svg
                 className="w-5 h-5"
                 fill="none"
@@ -81,7 +82,7 @@ export default function NotFound() {
                   d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
                 />
               </svg>
-              Return to Home
+              {t('returnHome')}
             </Link>
             <button
               onClick={() => window.history.back()}
@@ -100,7 +101,7 @@ export default function NotFound() {
                   d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
                 />
               </svg>
-              Go Back
+              {t('goBack')}
             </button>
           </div>
 
