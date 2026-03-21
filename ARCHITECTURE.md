@@ -16,7 +16,6 @@
 │  ├── /auth/*          → AuthController      │
 │  ├── /users/*         → UsersController     │
 │  ├── /health          → HealthController    │
-│  ├── /redis/*         → RedisController     │
 │  ├── /docs            → Swagger UI          │
 │  └── /* (catch-all)   → NextController      │
 │                              ↓              │
@@ -158,7 +157,7 @@ HTTP 响应 { code, message, data, timestamp, path }
 | 装饰器                        | 作用                        |
 | ----------------------------- | --------------------------- |
 | `@Public()`                   | 跳过 JwtAuthGuard，无需登录 |
-| `@Roles('admin')`             | 需要特定角色（需登录）      |
+| `@Roles(UserRole.ADMIN)`      | 需要特定角色（需登录）      |
 | `@Throttle({ ttlMs, limit })` | 启用速率限制                |
 | 默认（无装饰器）              | 需要登录（JWT 守卫拦截）    |
 
@@ -242,6 +241,6 @@ npm run migration:revert
 
 - 路由格式：`/zh/*`、`/en/*`
 - 翻译文件：`messages/zh.json`、`messages/en.json`
-- 配置：`i18n.config.ts`
-- 用法：`const t = useTranslations()`，`t('auth.login')`
-- 切换语言：`Navbar.tsx` 中 `handleLocaleChange()` 替换路径中的 locale 段
+- 配置：`i18n.config.ts`（locales、defaultLocale、localeNames 等常量统一在此定义）
+- 用法：`const t = useTranslations()`（直接使用 next-intl 提供的 hook），`t('auth.login')`
+- 切换语言：`lib/i18n/LanguageSwitcher.tsx` 替换路径中的 locale 段

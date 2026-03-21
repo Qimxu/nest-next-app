@@ -18,16 +18,16 @@ cp .env.example .env
 npm run migration:run
 ```
 
-### 生成新迁移（根据实体变化）
+### 生成新迁移（根据实体变化自动生成 SQL）
 
 ```bash
-npm run migration:generate src/database/migrations/MigrationName
+npm run migration:generate src/migrations/MigrationName
 ```
 
 ### 创建空迁移文件
 
 ```bash
-npm run migration:create src/database/migrations/MigrationName
+npm run migration:create src/migrations/MigrationName
 ```
 
 ### 回滚最后一次迁移
@@ -46,7 +46,10 @@ npm run migration:run
 npm run start:prod
 ```
 
-## 初始迁移
+## 现有迁移
 
-- `1710000000000-CreateUsersTable` - 创建用户表
-- `1710000000001-CreatePasswordResetTokensTable` - 创建密码重置令牌表
+| 文件                             | 说明                                                    |
+| -------------------------------- | ------------------------------------------------------- |
+| `1700000000000-CreateUsersTable` | 创建用户表（id、name、email、password、role、isActive） |
+
+> **注意**：密码重置令牌存储在 Redis 中（`password_reset:<token>`，TTL 1小时），无需数据库迁移。

@@ -43,8 +43,11 @@ nest-next-app/
 │   ├── auth/
 │   │   ├── server.ts             # SSR 用：decodeJwt + getServerFullUser
 │   │   └── context.tsx           # 客户端 AuthProvider + useAuth
-│   ├── request/index.ts          # HttpClient + TokenManager
-│   └── store/auth-store.ts
+│   ├── components/
+│   │   └── Navbar.tsx            # 顶部导航（语言切换 + 登录状态）
+│   ├── i18n/
+│   │   └── LanguageSwitcher.tsx  # 语言切换组件
+│   └── request/index.ts          # HttpClient + TokenManager
 ├── messages/                     # i18n 翻译文件
 │   ├── zh.json
 │   └── en.json
@@ -191,10 +194,9 @@ npm run start:prod
 
 ### 其他
 
-| 方法 | 路径          | 说明           |
-| ---- | ------------- | -------------- |
-| GET  | `/health`     | 健康检查       |
-| GET  | `/redis/test` | Redis 连接测试 |
+| 方法 | 路径      | 说明     |
+| ---- | --------- | -------- |
+| GET  | `/health` | 健康检查 |
 
 ## 生产部署
 
