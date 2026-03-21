@@ -16,7 +16,7 @@ export default new DataSource({
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_DATABASE || 'nest_next_app',
   entities: [join(__dirname, 'src', '**', '*.entity{.ts,.js}')],
-  migrations: [join(__dirname, 'src', 'database', 'migrations', '*{.ts,.js}')],
+  migrations: [join(__dirname, 'src', 'migrations', '*{.ts,.js}')],
   migrationsTableName: 'migrations',
   synchronize: false,
   logging: nodeEnv === 'development',

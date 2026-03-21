@@ -343,6 +343,17 @@ body {
   animation: spin-reverse 15s linear infinite;
 }
 
+/* ─── Reduced Motion ───────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* Delay utilities */
 .delay-100 {
   animation-delay: 100ms;

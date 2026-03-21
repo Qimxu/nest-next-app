@@ -1,4 +1,4 @@
-import { ValidationPipeOptions } from '@nestjs/common';
+import { BadRequestException, ValidationPipeOptions } from '@nestjs/common';
 
 /**
  * 全局验证管道配置
@@ -22,20 +22,17 @@ export const validationConfig: ValidationPipeOptions = {
   skipUndefinedProperties: false,
   // 禁用详细错误信息 (生产环境建议关闭)
   disableErrorMessages: process.env.NODE_ENV === 'production',
-  // 自定义错误消息工厂
+  // 自定义错误消息工厂（返回 HttpException 实例，符合 NestJS 规范）
   exceptionFactory: (errors) => {
-    const messages = errors.map((error) => {
-      return {
-        property: error.property,
-        constraints: error.constraints,
-        children: error.children,
-      };
-    });
-    return {
-      statusCode: 400,
+    const messages = errors.map((error) => ({
+      property: error.property,
+      constraints: error.constraints,
+      children: error.children,
+    }));
+    return new BadRequestException({
       message: 'Validation failed',
       errorCode: 'VALIDATION_ERROR',
       details: messages,
-    };
+    });
   },
 };

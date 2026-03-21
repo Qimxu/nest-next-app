@@ -79,7 +79,9 @@
     "agreeTerms": "我同意",
     "termsOfService": "服务条款",
     "privacyPolicy": "隐私政策",
-    "and": "和"
+    "and": "和",
+    "resetLinkInstruction": "点击以下链接重置密码：",
+    "copyLink": "复制链接"
   },
   "api": {
     "title": "API",
@@ -245,12 +247,20 @@
         "desc": "运行开发服务器，开始构建"
       }
     },
+    "problemLabel": "问题",
+    "solutionLabel": "解决",
     "cta": {
       "title": "准备好开始了吗？",
       "description": "立即开始构建您的下一个全栈应用",
       "start": "开始使用",
       "docs": "查看文档",
       "getStarted": "免费开始"
+    },
+    "footer": {
+      "tagline": "企业级全栈开发模板，NestJS + Next.js 完美融合",
+      "product": "产品",
+      "resources": "资源",
+      "contact": "联系我们"
     },
     "register": {
       "title": "加入我们",

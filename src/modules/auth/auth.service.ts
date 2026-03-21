@@ -2,6 +2,7 @@ import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { randomBytes } from 'crypto';
 import { RedisService } from '../redis/redis.service';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
@@ -44,12 +45,8 @@ export class AuthService {
       throw new BusinessException('Email already registered');
     }
 
-    // 加密密码并创建用户
-    const hashedPassword = await this.hashPassword(registerDto.password);
-    const user = await this.usersService.create({
-      ...registerDto,
-      password: hashedPassword,
-    });
+    // 创建用户（UsersService.create 内部统一负责密码哈希）
+    const user = await this.usersService.create(registerDto);
 
     // 生成 tokens
     return this.generateTokens(user);
@@ -60,14 +57,14 @@ export class AuthService {
     const user = await this.usersService.findByEmail(loginDto.email, true);
     if (!user) {
       throw new UnauthorizedException({
-        message: '账号或密码不存在',
+        message: 'Invalid credentials',
         code: 'INVALID_CREDENTIALS',
       });
     }
 
     if (!user.isActive) {
       throw new UnauthorizedException({
-        message: '账号已被禁用',
+        message: 'Account is disabled',
         code: 'ACCOUNT_DISABLED',
       });
     }
@@ -78,7 +75,7 @@ export class AuthService {
     );
     if (!isPasswordValid) {
       throw new UnauthorizedException({
-        message: '账号或密码不存在',
+        message: 'Invalid credentials',
         code: 'INVALID_CREDENTIALS',
       });
     }
@@ -94,12 +91,11 @@ export class AuthService {
       role: user.role,
     };
 
-    const jwtSecret = this.configService.get('jwt.secret') || 'your-secret-key';
-    const refreshSecret =
-      this.configService.get('jwt.refreshSecret') || jwtSecret + '-refresh';
-    const expiresIn = this.configService.get('jwt.expiresIn') || '30m';
-    const refreshExpiresIn =
-      this.configService.get('jwt.refreshExpiresIn') || '7d';
+    const jwtSecret = this.configService.get<string>('jwt.secret');
+    const refreshSecret = this.configService.get<string>('jwt.refreshSecret');
+    // expiresIn 需与 jsonwebtoken StringValue 兼容，不加泛型保留 any 类型
+    const expiresIn = this.configService.get('jwt.expiresIn');
+    const refreshExpiresIn = this.configService.get('jwt.refreshExpiresIn');
 
     // Access token (short-lived)
     const accessToken = this.jwtService.sign(payload, {
@@ -113,8 +109,10 @@ export class AuthService {
       expiresIn: refreshExpiresIn,
     });
 
-    // 存储 refresh token 到 Redis
-    const refreshTtl = 7 * 24 * 60 * 60; // 7 days in seconds
+    // 存储 refresh token 到 Redis，TTL 与 JWT refreshExpiresIn 保持一致
+    const refreshExpiresInStr =
+      this.configService.get<string>('jwt.refreshExpiresIn') || '7d';
+    const refreshTtl = this.parseExpiry(refreshExpiresInStr);
     await this.redisService.set(
       `${this.REFRESH_TOKEN_PREFIX}${user.id}`,
       refreshToken,
@@ -129,19 +127,17 @@ export class AuthService {
     };
   }
 
-  // 刷新 token
+  // 刷新 token（同时轮换 refresh token，旧 token 即时失效）
   async refreshToken(refreshToken: string) {
     try {
-      const refreshSecret =
-        this.configService.get('jwt.refreshSecret') ||
-        this.configService.get('jwt.secret') + '-refresh';
+      const refreshSecret = this.configService.get<string>('jwt.refreshSecret');
 
       // 验证 refresh token
       const payload = this.jwtService.verify(refreshToken, {
         secret: refreshSecret,
       });
 
-      // 检查 refresh token 是否在 Redis 中存在
+      // 检查 refresh token 是否在 Redis 中存在（防止重放攻击）
       const storedToken = await this.redisService.get<string>(
         `${this.REFRESH_TOKEN_PREFIX}${payload.sub}`,
       );
@@ -155,22 +151,8 @@ export class AuthService {
         throw new UnauthorizedException('User not found or disabled');
       }
 
-      // 生成新的 access token
-      const jwtSecret =
-        this.configService.get('jwt.secret') || 'your-secret-key';
-      const expiresIn = this.configService.get('jwt.expiresIn') || '30m';
-
-      const newPayload = {
-        sub: user.id,
-        email: user.email,
-        role: user.role,
-      };
-      const accessToken = this.jwtService.sign(newPayload, {
-        secret: jwtSecret,
-        expiresIn: expiresIn,
-      });
-
-      return { access_token: accessToken };
+      // 生成新的 access token + 轮换 refresh token
+      return this.generateTokens(user);
     } catch (error) {
       this.logger.error('Refresh token error:', error.message);
       throw new UnauthorizedException('Invalid refresh token');
@@ -202,6 +184,15 @@ export class AuthService {
     }
   }
 
+  /** 将 '7d' / '30m' / '3600' 格式的过期时间转为秒数 */
+  private parseExpiry(expiry: string): number {
+    if (/^\d+$/.test(expiry)) return parseInt(expiry, 10);
+    const unit = expiry.slice(-1);
+    const value = parseInt(expiry.slice(0, -1), 10);
+    const map: Record<string, number> = { s: 1, m: 60, h: 3600, d: 86400 };
+    return value * (map[unit] ?? 1);
+  }
+
   // 检查 token 是否在黑名单中
   async isTokenBlacklisted(token: string): Promise<boolean> {
     return this.redisService.exists(`${this.TOKEN_BLACKLIST_PREFIX}${token}`);
@@ -224,12 +215,8 @@ export class AuthService {
       return null;
     }
 
-    // 生成随机令牌
-    const token = await bcrypt.hash(
-      `${user.id}-${Date.now()}-${Math.random()}`,
-      10,
-    );
-    const cleanToken = token.replace(/[^a-zA-Z0-9]/g, '').substring(0, 64);
+    // 使用密码学安全随机数生成令牌
+    const cleanToken = randomBytes(32).toString('hex'); // 64 个十六进制字符
 
     // 存储到 Redis，设置1小时过期
     await this.redisService.set(

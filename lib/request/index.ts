@@ -86,19 +86,36 @@ class HttpClient {
   private defaultHeaders = API_CONFIG.headers;
   private defaultTimeout = API_CONFIG.timeout;
 
+  // Token 刷新互斥锁：多个并发 401 请求共享同一次刷新，避免竞争
+  private refreshPromise: Promise<string | null> | null = null;
+
   private getToken(): string | null {
-    let token = tokenManager.getToken();
-    if (!token && typeof window !== 'undefined') {
-      try {
-        const authStorage = localStorage.getItem('auth-storage');
-        if (authStorage) {
-          const { state } = JSON.parse(authStorage);
-          token = state?.token || null;
-          if (token) tokenManager.setToken(token);
-        }
-      } catch {}
-    }
-    return token;
+    return tokenManager.getToken();
+  }
+
+  /** 调用 /auth/refresh（无需 body，httpOnly cookie 自动携带）*/
+  private tryRefreshToken(): Promise<string | null> {
+    if (this.refreshPromise) return this.refreshPromise;
+
+    this.refreshPromise = fetch(this.buildURL('/auth/refresh'), {
+      method: 'POST',
+      headers: this.defaultHeaders,
+      credentials: 'include',
+      cache: 'no-store',
+    })
+      .then(async (res) => {
+        if (!res.ok) return null;
+        const json = await res.json();
+        const newToken: string | null = json?.data?.access_token ?? null;
+        if (newToken) tokenManager.setToken(newToken);
+        return newToken;
+      })
+      .catch(() => null)
+      .finally(() => {
+        this.refreshPromise = null;
+      });
+
+    return this.refreshPromise;
   }
 
   private buildURL(
@@ -163,9 +180,18 @@ class HttpClient {
       timeout?: number;
       signal?: AbortSignal;
       headers?: Record<string, string>;
+      _isRetry?: boolean; // 内部标志，防止无限刷新循环
     } = {},
   ): Promise<T> {
-    const { method = 'GET', body, params, timeout, signal, headers } = config;
+    const {
+      method = 'GET',
+      body,
+      params,
+      timeout,
+      signal,
+      headers,
+      _isRetry = false,
+    } = config;
     const token = this.getToken();
     const controller = new AbortController();
     const timeoutId = setTimeout(
@@ -187,6 +213,21 @@ class HttpClient {
         cache: process.env.NODE_ENV === 'development' ? 'no-store' : 'default',
       });
       clearTimeout(timeoutId);
+
+      // 首次 401：尝试无感刷新 Token，成功则自动重试原请求
+      if (
+        response.status === 401 &&
+        !_isRetry &&
+        typeof window !== 'undefined' &&
+        !url.includes('/auth/refresh') // 刷新本身失败不再递归
+      ) {
+        const newToken = await this.tryRefreshToken();
+        if (newToken) {
+          return this.request<T>(url, { ...config, _isRetry: true });
+        }
+        // 刷新失败，交由 handleResponse 派发 auth:logout
+      }
+
       return (await this.handleResponse<T>(response)).data;
     } catch (error) {
       clearTimeout(timeoutId);
