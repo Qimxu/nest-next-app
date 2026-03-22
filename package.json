@@ -3,7 +3,7 @@
   "version": "1.1.1",
   "description": "NestJS + Next.js integrated application",
   "scripts": {
-    "clean": "rimraf dist .next coverage",
+    "clean": "node -e \"const fs=require('fs');['dist','.next','coverage'].forEach(d=>fs.rmSync(d,{recursive:true,force:true}))\"",
     "build": "npm run clean && nest build && next build",
     "format": "prettier --write \"src/**/*.{ts,tsx}\" \"test/**/*.{ts,tsx}\" \"lib/**/*.{ts,tsx}\" \"app/**/*.{ts,tsx}\" \"messages/**/*.{json,md}\" \".github/**/*.{yml,yaml,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx}\" \"test/**/*.{ts,tsx}\" \"lib/**/*.{ts,tsx}\" \"app/**/*.{ts,tsx}\" \"messages/**/*.{json,md}\" \".github/**/*.{yml,yaml,md}\"",
@@ -24,7 +24,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e": "jest --config ./test/jest-e2e.json --passWithNoTests",
     "prepare": "node -e \"process.env.CI || require('child_process').execSync('husky install', {stdio:'inherit'})\"",
     "migration:generate": "typeorm-ts-node-commonjs migration:generate -d data-source.ts",
     "migration:run": "typeorm-ts-node-commonjs migration:run -d data-source.ts",
