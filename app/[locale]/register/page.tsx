@@ -6,12 +6,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { authApi } from '@/services/auth';
 import { useAuth } from '@/lib/auth/context';
+import { tokenManager } from '@/lib/request';
 
 export default function RegisterPage() {
   const t = useTranslations();
   const locale = useLocale();
   const router = useRouter();
-  const { login } = useAuth();
+  const { refreshUser } = useAuth();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -39,8 +40,12 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      await authApi.register({ name, email, password });
-      await login(email, password);
+      // register 接口已返回 token 并设置 cookie，直接用响应中的 token
+      // 无需再次调用 login（避免额外的 POST /auth/login + GET /users/profile 请求）
+      const response = await authApi.register({ name, email, password });
+      tokenManager.setToken(response.access_token);
+      tokenManager.setRefreshToken(response.refresh_token);
+      await refreshUser();
       router.push(`/${locale}`);
     } catch (err: unknown) {
       const errorMessage =

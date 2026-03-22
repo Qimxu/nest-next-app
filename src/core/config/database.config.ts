@@ -10,5 +10,8 @@ export default registerAs('db', () => ({
   username: process.env.DB_USERNAME || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_DATABASE || 'nest_next_app',
-  synchronize: process.env.DB_SYNCHRONIZE === 'true',
+  // 生产环境强制禁用 synchronize，防止自动迁移破坏数据
+  synchronize:
+    process.env.NODE_ENV !== 'production' &&
+    process.env.DB_SYNCHRONIZE === 'true',
 }));

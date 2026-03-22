@@ -79,7 +79,9 @@
     "agreeTerms": "I agree to the",
     "termsOfService": "Terms of Service",
     "privacyPolicy": "Privacy Policy",
-    "and": "and"
+    "and": "and",
+    "resetLinkInstruction": "Click the link below to reset your password:",
+    "copyLink": "Copy link"
   },
   "api": {
     "title": "API",
@@ -245,12 +247,20 @@
         "desc": "Run development server and start building"
       }
     },
+    "problemLabel": "Problem",
+    "solutionLabel": "Solution",
     "cta": {
       "title": "Ready to Get Started?",
       "description": "Start building your next full-stack application today",
       "start": "Get Started",
       "docs": "View Docs",
       "getStarted": "Get Started Free"
+    },
+    "footer": {
+      "tagline": "Enterprise full-stack template. NestJS + Next.js perfectly integrated.",
+      "product": "Product",
+      "resources": "Resources",
+      "contact": "Contact"
     },
     "register": {
       "title": "Join Us",

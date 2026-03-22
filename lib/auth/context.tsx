@@ -48,6 +48,13 @@ export function AuthProvider({ children, initialUser }: AuthProviderProps) {
     }
   }, []); // eslint-disable-line
 
+  // 监听 HttpClient 在 401 时派发的 auth:logout 事件，清理用户状态
+  useEffect(() => {
+    const handleAuthLogout = () => setUser(null);
+    window.addEventListener('auth:logout', handleAuthLogout);
+    return () => window.removeEventListener('auth:logout', handleAuthLogout);
+  }, []);
+
   const login = useCallback(async (email: string, password: string) => {
     setIsLoading(true);
     try {

@@ -1,6 +1,6 @@
 {
   "name": "nest-next-app",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "NestJS + Next.js integrated application",
   "scripts": {
     "clean": "rimraf dist .next coverage",
@@ -26,10 +26,11 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prepare": "husky install",
-    "migration:generate": "typeorm-ts-node-commonjs migration:generate -d ./data-source.ts",
-    "migration:run": "typeorm-ts-node-commonjs migration:run -d ./data-source.ts",
-    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d ./data-source.ts",
-    "migration:create": "typeorm-ts-node-commonjs migration:create"
+    "migration:generate": "typeorm-ts-node-commonjs migration:generate -d data-source.ts",
+    "migration:run": "typeorm-ts-node-commonjs migration:run -d data-source.ts",
+    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d data-source.ts",
+    "migration:create": "typeorm-ts-node-commonjs migration:create",
+    "seed": "ts-node -r tsconfig-paths/register scripts/seed.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.3.0",

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
 import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { authApi } from '@/services/auth';
 
 type PageState = 'verifying' | 'form' | 'submitting' | 'success' | 'error';
@@ -13,6 +13,7 @@ function ResetPasswordContent() {
   const locale = useLocale();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
+  const router = useRouter();
 
   const [pageState, setPageState] = useState<PageState>('verifying');
   const [newPassword, setNewPassword] = useState('');

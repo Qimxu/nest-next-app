@@ -279,13 +279,13 @@ const [showPassword, setShowPassword] = useState(false);
                     <div className="space-y-3 mb-4">
                       <div className="flex items-start gap-2 text-sm">
                         <span className="text-red-400 font-medium flex-shrink-0">
-                          问题:
+                          {t('home.problemLabel')}:
                         </span>
                         <span className="text-gray-500">{feature.problem}</span>
                       </div>
                       <div className="flex items-start gap-2 text-sm">
                         <span className="text-green-400 font-medium flex-shrink-0">
-                          解决:
+                          {t('home.solutionLabel')}:
                         </span>
                         <span className="text-gray-500">
                           {feature.solution}
@@ -622,9 +622,7 @@ const [showPassword, setShowPassword] = useState(false);
                 </span>
               </div>
               <p className="text-sm text-gray-500 leading-relaxed mb-6">
-                企业级全栈开发模板
-                <br />
-                NestJS + Next.js 完美融合
+                {t('home.footer.tagline')}
               </p>
               {/* Social Icons */}
               <div className="flex items-center gap-3">
@@ -648,7 +646,7 @@ const [showPassword, setShowPassword] = useState(false);
             {/* Product Links */}
             <div>
               <h4 className="font-['Orbitron'] text-sm font-semibold text-white mb-4 tracking-wider">
-                产品
+                {t('home.footer.product')}
               </h4>
               <ul className="space-y-3">
                 <li>
@@ -689,7 +687,7 @@ const [showPassword, setShowPassword] = useState(false);
             {/* Resources Links */}
             <div>
               <h4 className="font-['Orbitron'] text-sm font-semibold text-white mb-4 tracking-wider">
-                资源
+                {t('home.footer.resources')}
               </h4>
               <ul className="space-y-3">
                 <li>
@@ -738,7 +736,7 @@ const [showPassword, setShowPassword] = useState(false);
             {/* Contact Column */}
             <div>
               <h4 className="font-['Orbitron'] text-sm font-semibold text-white mb-4 tracking-wider">
-                联系我们
+                {t('home.footer.contact')}
               </h4>
               <ul className="space-y-3">
                 <li className="flex items-center gap-2 text-sm text-gray-500">
