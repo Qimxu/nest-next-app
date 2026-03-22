@@ -13,20 +13,25 @@ env:
 
 jobs:
   # ============================================
-  # Lint & Unit Tests
+  # Lint & Unit Tests (Node.js 版本矩阵)
   # ============================================
   lint-and-test:
-    name: Lint & Unit Tests
+    name: Lint & Unit Tests (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: ['18', '20', '22']
+      fail-fast: false
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
       - name: Install dependencies

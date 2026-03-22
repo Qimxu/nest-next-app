@@ -1,5 +1,11 @@
 # NestJS + Next.js 全栈应用模板
 
+[![CI](https://github.com/Qimxu/nest-next-app/actions/workflows/ci.yml/badge.svg)](https://github.com/Qimxu/nest-next-app/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/Qimxu/nest-next-app/branch/main/graph/badge.svg)](https://codecov.io/gh/Qimxu/nest-next-app)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-green)](package.json)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
+
 一个基于 NestJS 和 Next.js 的全栈 SSR 模板，集成 JWT 认证、Redis 缓存、MySQL 数据库、国际化支持。
 
 > 架构设计详见 [ARCHITECTURE.md](./ARCHITECTURE.md)
@@ -253,4 +259,4 @@ NODE_ENV=production npm run start:prod
 
 ## License
 
-MIT
+[MIT](./LICENSE) © 2026 [Qimxu](https://github.com/Qimxu)

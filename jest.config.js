@@ -1,7 +1,7 @@
 module.exports = {
   moduleFileExtensions: ['js', 'json', 'ts'],
-  rootDir: 'src',
-  testRegex: '.*\\.spec\\.ts$',
+  rootDir: '.',
+  testMatch: ['<rootDir>/src/**/*.spec.ts', '<rootDir>/test/*.spec.ts'],
   passWithNoTests: true,
   transform: {
     '^.+\\.(t|j)s$': [
@@ -12,13 +12,13 @@ module.exports = {
     ],
   },
   collectCoverageFrom: [
-    '**/*.(t|j)s',
-    '!**/*.spec.(t|j)s',
-    '!**/*.e2e-spec.(t|j)s',
-    '!**/main.(t|j)s',
-    '!**/index.(t|j)s',
-    '!**/*.module.(t|j)s',
-    '!**/migrations/**',
+    'src/**/*.(t|j)s',
+    '!src/**/*.spec.(t|j)s',
+    '!src/**/*.e2e-spec.(t|j)s',
+    '!src/**/main.(t|j)s',
+    '!src/**/index.(t|j)s',
+    '!src/**/*.module.(t|j)s',
+    '!src/**/migrations/**',
   ],
   coverageThreshold: {
     global: {
@@ -28,9 +28,9 @@ module.exports = {
       statements: 50,
     },
   },
-  coverageDirectory: '../coverage',
+  coverageDirectory: './coverage',
   testEnvironment: 'node',
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/$1',
+    '^@/(.*)$': '<rootDir>/src/$1',
   },
 };
