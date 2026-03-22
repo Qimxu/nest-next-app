@@ -48,7 +48,7 @@
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
-    "ioredis": "^5.10.0",
+    "ioredis": "^5.10.1",
     "joi": "^18.0.2",
     "jose": "^6.2.2",
     "js-yaml": "^4.1.1",
