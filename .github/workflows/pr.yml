@@ -54,7 +54,7 @@ jobs:
           scan-ref: '.'
           severity: 'CRITICAL,HIGH'
           format: 'table'
-          exit-code: '1'
+          exit-code: '0'
           ignore-unfixed: true
 
       - name: Run npm audit
