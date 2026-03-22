@@ -150,7 +150,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Build application
-        run: npm run build:prod
+        run: npm run start
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

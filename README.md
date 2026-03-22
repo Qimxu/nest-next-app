@@ -160,7 +160,7 @@ npm run start:prod
 | 命令                       | 说明                                |
 | -------------------------- | ----------------------------------- |
 | `npm run start:dev`        | 开发模式                            |
-| `npm run build:prod`       | 生产构建                            |
+| `npm run start`            | 生产构建                            |
 | `npm run lint`             | 代码检查并修复                      |
 | `npm run test`             | 运行单元测试                        |
 | `npm run test:cov`         | 运行测试并生成覆盖率报告            |
