@@ -4,10 +4,10 @@
   "description": "NestJS + Next.js integrated application",
   "scripts": {
     "clean": "node -e \"const fs=require('fs');['dist','.next','coverage'].forEach(d=>fs.rmSync(d,{recursive:true,force:true}))\"",
-    "build": "npm run clean && nest build && next build",
+    "build": "npm run clean && npx nest build && npx next build",
     "format": "prettier --write \"src/**/*.{ts,tsx}\" \"test/**/*.{ts,tsx}\" \"lib/**/*.{ts,tsx}\" \"app/**/*.{ts,tsx}\" \"messages/**/*.{json,md}\" \".github/**/*.{yml,yaml,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx}\" \"test/**/*.{ts,tsx}\" \"lib/**/*.{ts,tsx}\" \"app/**/*.{ts,tsx}\" \"messages/**/*.{json,md}\" \".github/**/*.{yml,yaml,md}\"",
-    "start": "nest start",
+    "start": "npx nest start",
     "start:dev": "NODE_ENV=development NODE_NO_WARNINGS=1 nodemon",
     "start:sit": "NODE_ENV=sit NODE_NO_WARNINGS=1 nodemon",
     "start:prod": "NODE_ENV=production node dist/main",
