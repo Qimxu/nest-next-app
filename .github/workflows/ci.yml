@@ -144,13 +144,37 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+          # Disable cache to avoid potential issues
           cache: 'npm'
+
+      - name: Clear npm cache
+        run: npm cache clean --force
 
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
+      - name: Verify CLI availability
+        run: |
+          echo "Checking npx availability..."
+          npx --version
+          echo "Checking nest CLI..."
+          npx nest --version || true
+          echo "Checking next CLI..."
+          npx next --version || true
+
       - name: Build application
-        run: npm run build
+        run: |
+          echo "Starting build..."
+          NODE_OPTIONS="--max-old-space-size=4096" npm run build 2>&1 | tee build.log
+        timeout-minutes: 10
+
+      - name: Upload build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
+          retention-days: 1
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
