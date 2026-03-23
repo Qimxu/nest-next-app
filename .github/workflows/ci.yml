@@ -237,6 +237,8 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             NODE_ENV=production
+        # Allow push to fail without blocking CI (for fork repos or permission issues)
+        continue-on-error: true
 
   # ============================================
   # Deploy to Development
