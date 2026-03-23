@@ -194,6 +194,13 @@ jobs:
     needs: [build, e2e-tests]
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
 
+    # Grant permissions to push to GitHub Container Registry
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
