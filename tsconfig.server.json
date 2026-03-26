@@ -21,7 +21,8 @@
     "resolveJsonModule": true,
     "paths": {
       "@/*": ["./*"],
-      "@/common/*": ["src/common/*"]
+      "@/core/*": ["src/core/*"],
+      "@/modules/*": ["src/modules/*"]
     }
   },
   "include": ["src/**/*"],

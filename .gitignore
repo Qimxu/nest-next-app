@@ -32,3 +32,6 @@ yarn-error.log*
 .next/
 out/
 build
+
+# TypeScript
+*.tsbuildinfo

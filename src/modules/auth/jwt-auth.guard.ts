@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { AUTH_KEY } from '@/common/decorators';
+import { PUBLIC_KEY } from '@/core/decorators';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -24,14 +24,19 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       return true;
     }
 
-    // 检查是否标记为需要登录（默认不需要）
-    const requireAuth = this.reflector.getAllAndOverride<boolean>(AUTH_KEY, [
+    // 静态资源路径直接通过
+    if (request.path?.startsWith('/static')) {
+      return true;
+    }
+
+    // 检查是否标记为公开接口（默认需要认证）
+    const isPublic = this.reflector.getAllAndOverride<boolean>(PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
 
-    // 没有标记则默认公开
-    if (!requireAuth) {
+    // 标记为公开则无需认证
+    if (isPublic) {
       return true;
     }
 

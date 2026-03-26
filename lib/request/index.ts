@@ -4,7 +4,7 @@
 
 // ============ 配置 ============
 export const API_CONFIG = {
-  baseURL: typeof window !== 'undefined' ? '/api' : 'http://localhost:3000/api',
+  baseURL: typeof window !== 'undefined' ? '' : 'http://localhost:3000',
   timeout: 30000,
   headers: { 'Content-Type': 'application/json' },
 };
@@ -86,22 +86,42 @@ class HttpClient {
   private defaultHeaders = API_CONFIG.headers;
   private defaultTimeout = API_CONFIG.timeout;
 
+  // Token 刷新互斥锁：多个并发 401 请求共享同一次刷新，避免竞争
+  private refreshPromise: Promise<string | null> | null = null;
+
   private getToken(): string | null {
-    let token = tokenManager.getToken();
-    if (!token && typeof window !== 'undefined') {
-      try {
-        const authStorage = localStorage.getItem('auth-storage');
-        if (authStorage) {
-          const { state } = JSON.parse(authStorage);
-          token = state?.token || null;
-          if (token) tokenManager.setToken(token);
-        }
-      } catch {}
-    }
-    return token;
+    return tokenManager.getToken();
   }
 
-  private buildURL(url: string, params?: Record<string, string | number>): string {
+  /** 调用 /auth/refresh（无需 body，httpOnly cookie 自动携带）*/
+  private tryRefreshToken(): Promise<string | null> {
+    if (this.refreshPromise) return this.refreshPromise;
+
+    this.refreshPromise = fetch(this.buildURL('/auth/refresh'), {
+      method: 'POST',
+      headers: this.defaultHeaders,
+      credentials: 'include',
+      cache: 'no-store',
+    })
+      .then(async (res) => {
+        if (!res.ok) return null;
+        const json = await res.json();
+        const newToken: string | null = json?.data?.access_token ?? null;
+        if (newToken) tokenManager.setToken(newToken);
+        return newToken;
+      })
+      .catch(() => null)
+      .finally(() => {
+        this.refreshPromise = null;
+      });
+
+    return this.refreshPromise;
+  }
+
+  private buildURL(
+    url: string,
+    params?: Record<string, string | number>,
+  ): string {
     const fullURL = url.startsWith('http') ? url : `${this.baseURL}${url}`;
     if (params) {
       const searchParams = new URLSearchParams();
@@ -119,20 +139,65 @@ class HttpClient {
     if (response.status === 401) {
       tokenManager.clearTokens();
       if (typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent('auth:logout', { detail: { reason: 'token_expired' } }));
+        window.dispatchEvent(
+          new CustomEvent('auth:logout', {
+            detail: { reason: 'token_expired' },
+          }),
+        );
       }
-      throw new ApiError('Unauthorized', 401, data.data);
+      // 保留后端返回的错误码 (INVALID_CREDENTIALS, ACCOUNT_DISABLED 等)
+      const error = new ApiError(
+        data.message || 'Unauthorized',
+        401,
+        data.data,
+      );
+      (error as any).code = data.data;
+      throw error;
     }
-    if (!response.ok) throw new ApiError(data.message || `HTTP ${response.status}`, response.status, data.data);
-    if (data.code >= 400) throw new ApiError(data.message, data.code, data.data);
+    if (!response.ok) {
+      const error = new ApiError(
+        data.message || `HTTP ${response.status}`,
+        response.status,
+        data.data,
+      );
+      (error as any).code = data.data;
+      throw error;
+    }
+    if (data.code >= 400) {
+      const error = new ApiError(data.message, data.code, data.data);
+      (error as any).code = data.data;
+      throw error;
+    }
     return data;
   }
 
-  async request<T>(url: string, config: { method?: string; body?: any; params?: Record<string, string | number>; timeout?: number; signal?: AbortSignal; headers?: Record<string, string> } = {}): Promise<T> {
-    const { method = 'GET', body, params, timeout, signal, headers } = config;
+  async request<T>(
+    url: string,
+    config: {
+      method?: string;
+      body?: any;
+      params?: Record<string, string | number>;
+      timeout?: number;
+      signal?: AbortSignal;
+      headers?: Record<string, string>;
+      _isRetry?: boolean; // 内部标志，防止无限刷新循环
+    } = {},
+  ): Promise<T> {
+    const {
+      method = 'GET',
+      body,
+      params,
+      timeout,
+      signal,
+      headers,
+      _isRetry = false,
+    } = config;
     const token = this.getToken();
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout || this.defaultTimeout);
+    const timeoutId = setTimeout(
+      () => controller.abort(),
+      timeout || this.defaultTimeout,
+    );
 
     try {
       const response = await fetch(this.buildURL(url, params), {
@@ -148,11 +213,27 @@ class HttpClient {
         cache: process.env.NODE_ENV === 'development' ? 'no-store' : 'default',
       });
       clearTimeout(timeoutId);
+
+      // 首次 401：尝试无感刷新 Token，成功则自动重试原请求
+      if (
+        response.status === 401 &&
+        !_isRetry &&
+        typeof window !== 'undefined' &&
+        !url.includes('/auth/refresh') // 刷新本身失败不再递归
+      ) {
+        const newToken = await this.tryRefreshToken();
+        if (newToken) {
+          return this.request<T>(url, { ...config, _isRetry: true });
+        }
+        // 刷新失败，交由 handleResponse 派发 auth:logout
+      }
+
       return (await this.handleResponse<T>(response)).data;
     } catch (error) {
       clearTimeout(timeoutId);
       if (error instanceof ApiError) throw error;
-      if ((error as Error).name === 'AbortError') throw new ApiError('Request aborted', 0);
+      if ((error as Error).name === 'AbortError')
+        throw new ApiError('Request aborted', 0);
       throw new ApiError((error as Error).message || 'Network error', 0);
     }
   }

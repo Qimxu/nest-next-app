@@ -2,7 +2,12 @@
 
 import { useLocale } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
-import { locales, localeNames, type Locale, isValidLocale } from '@/i18n.config';
+import {
+  locales,
+  localeNames,
+  type Locale,
+  isValidLocale,
+} from '@/i18n.config';
 
 interface LanguageSwitcherProps {
   className?: string;
@@ -25,17 +30,17 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
   };
 
   return (
-    <div className={`flex items-center gap-2 ${className || ''}`}>
+    <div className={`flex items-center gap-1 ${className || ''}`}>
       {locales.map((locale) => (
         <button
           key={locale}
           onClick={() => handleChange(locale)}
           className={`
-            px-3 py-1.5 text-sm font-medium rounded-md transition-colors
+            px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-200
             ${
               currentLocale === locale
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-primary-600 text-white shadow-sm'
+                : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900'
             }
           `}
         >

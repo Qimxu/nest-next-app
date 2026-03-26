@@ -20,10 +20,14 @@ export interface CreateUserParams {
 
 export const usersApi = {
   getList: (params?: PaginationParams) =>
-    http.get<PaginatedData<User>>('/users', params as Record<string, string | number>),
+    http.get<PaginatedData<User>>(
+      '/users',
+      params as Record<string, string | number>,
+    ),
   getOne: (id: number) => http.get<User>(`/users/${id}`),
   getProfile: () => http.get<User>('/users/profile'),
   create: (data: CreateUserParams) => http.post<User>('/users', data),
-  update: (id: number, data: Partial<CreateUserParams>) => http.patch<User>(`/users/${id}`, data),
+  update: (id: number, data: Partial<CreateUserParams>) =>
+    http.patch<User>(`/users/${id}`, data),
   delete: (id: number) => http.delete<void>(`/users/${id}`),
 };

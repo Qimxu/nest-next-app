@@ -1,3 +1,372 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+/* ─────────────────────────────────────────────
+   NestNext Theme — Purple × Blue
+   Purple (#a855f7) = NestJS
+   Blue   (#38bdf8) = Next.js
+   ───────────────────────────────────────────── */
+:root {
+  --background: #0d0b14;
+  --foreground: #f4f4f8;
+  --muted: #71717a;
+  --border: #1e1b2e;
+
+  /* Brand */
+  --purple: #a855f7;
+  --blue: #38bdf8;
+  --indigo: #818cf8;
+
+  /* Semantic aliases (backward compat) */
+  --neon-cyan: #38bdf8;
+  --neon-pink: #a855f7;
+  --neon-purple: #a855f7;
+
+  /* Fonts */
+  --font-display: 'Orbitron', monospace;
+  --font-sans: 'Sora', system-ui, sans-serif;
+}
+
+/* ─── Base ─────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--background);
+  color: var(--foreground);
+  line-height: 1.6;
+}
+
+::selection {
+  background-color: oklch(0.55 0.28 290 / 0.35);
+  color: white;
+}
+
+/* Hide scrollbar */
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Background Grid ──────────────────────── */
+.bg-cyber-grid {
+  background-image:
+    linear-gradient(oklch(0.55 0.28 290 / 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.65 0.2 220 / 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* ─── Gradient Text ────────────────────────── */
+.text-gradient {
+  background: linear-gradient(135deg, #a855f7 0%, #818cf8 50%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Text Glow ────────────────────────────── */
+.text-glow-purple {
+  text-shadow:
+    0 0 10px oklch(0.55 0.28 290 / 0.9),
+    0 0 20px oklch(0.55 0.28 290 / 0.5),
+    0 0 40px oklch(0.55 0.28 290 / 0.25);
+}
+
+.text-glow-blue {
+  text-shadow:
+    0 0 10px oklch(0.72 0.18 220 / 0.9),
+    0 0 20px oklch(0.72 0.18 220 / 0.5);
+}
+
+/* backward compat aliases */
+.text-glow-cyan {
+  text-shadow:
+    0 0 10px oklch(0.72 0.18 220 / 0.9),
+    0 0 20px oklch(0.72 0.18 220 / 0.5);
+}
+.text-glow-pink {
+  text-shadow:
+    0 0 10px oklch(0.55 0.28 290 / 0.9),
+    0 0 20px oklch(0.55 0.28 290 / 0.5),
+    0 0 40px oklch(0.55 0.28 290 / 0.25);
+}
+
+/* ─── Primary Button (Gradient Fill) ──────── */
+.btn-cyber {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: linear-gradient(135deg, #a855f7, #38bdf8);
+  color: white;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  box-shadow:
+    0 0 20px oklch(0.55 0.28 290 / 0.3),
+    0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.btn-cyber:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 32px oklch(0.55 0.28 290 / 0.5),
+    0 8px 24px rgba(0, 0, 0, 0.45);
+  filter: brightness(1.1);
+}
+
+.btn-cyber:active {
+  transform: translateY(0);
+}
+.btn-cyber:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ─── Secondary Button (Ghost) ────────────── */
+.btn-cyber-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: oklch(0.55 0.28 290 / 0.06);
+  color: #c4b5fd;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid oklch(0.55 0.28 290 / 0.3);
+  border-radius: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.btn-cyber-outline:hover {
+  background: oklch(0.55 0.28 290 / 0.12);
+  border-color: oklch(0.55 0.28 290 / 0.6);
+  color: white;
+  box-shadow: 0 0 16px oklch(0.55 0.28 290 / 0.2);
+}
+
+/* ─── Glassmorphism Card ───────────────────── */
+.card-cyber {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-cyber:hover {
+  background: oklch(0.55 0.28 290 / 0.07);
+  border-color: oklch(0.55 0.28 290 / 0.3);
+  box-shadow:
+    0 0 30px oklch(0.55 0.28 290 / 0.12),
+    0 20px 40px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ─── Input ────────────────────────────────── */
+.input-cyber {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: white;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  border-radius: 0.625rem;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.input-cyber:focus {
+  outline: none;
+  border-color: oklch(0.55 0.28 290 / 0.55);
+  box-shadow: 0 0 0 3px oklch(0.55 0.28 290 / 0.12);
+}
+
+.input-cyber::placeholder {
+  color: #52525b;
+}
+
+/* ─── Label ────────────────────────────────── */
+.label-cyber {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #c4b5fd;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+}
+
+/* ─── Animations ───────────────────────────── */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 6px var(--purple);
+  }
+  50% {
+    opacity: 0.6;
+    box-shadow:
+      0 0 18px var(--purple),
+      0 0 36px oklch(0.55 0.28 290 / 0.3);
+  }
+}
+
+@keyframes glitch-1 {
+  0%,
+  100% {
+    clip-path: inset(0 0 0 0);
+    transform: translate(0);
+  }
+  20% {
+    clip-path: inset(20% 0 60% 0);
+    transform: translate(-3px, 2px);
+  }
+  40% {
+    clip-path: inset(40% 0 40% 0);
+    transform: translate(3px, -2px);
+  }
+  60% {
+    clip-path: inset(60% 0 20% 0);
+    transform: translate(-2px, 1px);
+  }
+  80% {
+    clip-path: inset(80% 0 0 0);
+    transform: translate(2px, -1px);
+  }
+}
+
+@keyframes glitch-2 {
+  0%,
+  100% {
+    clip-path: inset(0 0 0 0);
+    transform: translate(0);
+  }
+  20% {
+    clip-path: inset(60% 0 20% 0);
+    transform: translate(3px, -2px);
+  }
+  40% {
+    clip-path: inset(20% 0 60% 0);
+    transform: translate(-3px, 2px);
+  }
+  60% {
+    clip-path: inset(80% 0 0 0);
+    transform: translate(2px, -1px);
+  }
+  80% {
+    clip-path: inset(40% 0 40% 0);
+    transform: translate(-2px, 1px);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-20px) translateX(10px);
+    opacity: 0.6;
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+.animate-glitch-1 {
+  animation: glitch-1 3s ease-in-out infinite;
+}
+.animate-glitch-2 {
+  animation: glitch-2 3s ease-in-out infinite;
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+.animate-spin-reverse {
+  animation: spin-reverse 15s linear infinite;
+}
+
+/* ─── Reduced Motion ───────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Delay utilities */
+.delay-100 {
+  animation-delay: 100ms;
+}
+.delay-200 {
+  animation-delay: 200ms;
+}
+.delay-300 {
+  animation-delay: 300ms;
+}
+.delay-400 {
+  animation-delay: 400ms;
+}
+.delay-500 {
+  animation-delay: 500ms;
+}

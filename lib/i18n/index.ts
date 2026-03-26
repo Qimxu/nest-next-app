@@ -15,8 +15,5 @@ export {
   getLocaleName,
 } from '../../i18n.config';
 
-// 导出 hooks
-export { useTranslation, useNumber, useDateFormat } from './useTranslation';
-
 // 导出组件
 export { LanguageSwitcher } from './LanguageSwitcher';

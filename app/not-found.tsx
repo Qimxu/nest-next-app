@@ -1,76 +1,126 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import NotFoundAnimations from './not-found-animations';
 
 export default function NotFound() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="text-center px-4">
-        {/* Logo */}
-        <div className="mb-8">
-          <Image
-            src="/static/logo.png"
-            alt="Logo"
-            width={80}
-            height={80}
-            className="mx-auto opacity-50"
-          />
-        </div>
+    <div className="min-h-screen bg-[#0d0b14] text-white">
+      <NotFoundAnimations />
 
-        {/* 404 数字 */}
-        <h1 className="text-9xl font-bold text-gray-200 tracking-wider">404</h1>
-
-        {/* 提示信息 */}
-        <h2 className="text-3xl font-semibold text-gray-700 mb-4 mt-4">
-          页面未找到
-        </h2>
-        <p className="text-gray-500 mb-8 max-w-md mx-auto">
-          抱歉，您访问的页面不存在或已被移除。请检查URL是否正确，或返回首页继续浏览。
-        </p>
-
-        {/* 返回按钮 */}
-        <div className="flex gap-4 justify-center">
-          <Link
-            href="/"
-            className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
-          >
-            <svg
-              className="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      {/* Main Content */}
+      <main className="relative z-10 min-h-screen flex items-center justify-center px-6">
+        <div className="text-center max-w-2xl mx-auto">
+          {/* Glitch 404 */}
+          <div className="mb-6 relative">
+            {/* Glitch layers */}
+            <span
+              className="absolute top-0 left-1/2 -translate-x-1/2 -ml-1 text-[6rem] md:text-[10rem] font-black leading-none tracking-tighter text-[#a855f7]/70 opacity-50 animate-glitch-1 select-none font-['Orbitron']"
+              aria-hidden="true"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-              />
-            </svg>
-            返回首页
-          </Link>
-          <button
-            onClick={() => window.history.back()}
-            className="inline-flex items-center px-6 py-3 bg-white text-gray-700 rounded-lg font-medium border border-gray-300 hover:bg-gray-50 transition-colors"
-          >
-            <svg
-              className="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+              404
+            </span>
+            <span
+              className="absolute top-0 left-1/2 -translate-x-1/2 ml-1 text-[6rem] md:text-[10rem] font-black leading-none tracking-tighter text-[#38bdf8]/70 opacity-50 animate-glitch-2 select-none font-['Orbitron']"
+              aria-hidden="true"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
-            返回上页
-          </button>
+              404
+            </span>
+            <h1 className="relative text-[6rem] md:text-[10rem] font-black leading-none tracking-tighter bg-gradient-to-b from-white via-gray-300 to-gray-600 bg-clip-text text-transparent select-none font-['Orbitron']">
+              404
+            </h1>
+          </div>
+
+          {/* Error Badge */}
+          <div
+            className={`inline-flex items-center px-4 py-2 bg-[#a855f7]/10 border border-[#a855f7]/30 text-[#c4b5fd] text-sm font-medium mb-6 font-['Orbitron'] rounded-lg transition-all duration-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          >
+            <span className="w-2 h-2 bg-[#a855f7] rounded-full mr-2 animate-pulse shadow-[0_0_10px_#a855f7]" />
+            PAGE_NOT_FOUND
+          </div>
+
+          {/* Title */}
+          <h2
+            className={`text-3xl md:text-4xl font-bold mb-4 font-['Orbitron'] transition-all duration-500 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          >
+            <span className="text-[#a855f7]">&lt;</span>
+            Lost in the Void
+            <span className="text-[#38bdf8]">/&gt;</span>
+          </h2>
+
+          {/* Description */}
+          <p
+            className={`text-gray-400 text-lg mb-10 max-w-md mx-auto leading-relaxed transition-all duration-500 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          >
+            The page you&apos;re looking for doesn&apos;t exist or has been
+            moved to another dimension.
+          </p>
+
+          {/* Action Buttons */}
+          <div
+            className={`flex flex-col sm:flex-row items-center justify-center gap-4 transition-all duration-500 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          >
+            <Link href="/zh" className="btn-cyber">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+                />
+              </svg>
+              Return to Home
+            </Link>
+            <button
+              onClick={() => window.history.back()}
+              className="btn-cyber-outline"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                />
+              </svg>
+              Go Back
+            </button>
+          </div>
+
+          {/* Tech Details */}
+          <div
+            className={`mt-16 pt-8 border-t border-white/5 transition-all duration-500 delay-400 ${mounted ? 'opacity-100' : 'opacity-0'}`}
+          >
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-gray-600 font-mono">
+              <span className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-[#a855f7]/50 rounded-full" />
+                STATUS: 404
+              </span>
+              <span className="text-gray-700">|</span>
+              <span>ERROR: NOT_FOUND</span>
+              <span className="text-gray-700">|</span>
+              <span>NAMESPACE: VOID</span>
+            </div>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

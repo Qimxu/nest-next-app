@@ -2,6 +2,9 @@ import { NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { ReactNode } from 'react';
 import { locales, isValidLocale } from '@/i18n.config';
+import { getServerFullUser } from '@/lib/auth/server';
+import { AuthProvider } from '@/lib/auth/context';
+import { Navbar } from '@/lib/components/Navbar';
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -20,20 +23,26 @@ export default async function LocaleLayout({
   params,
 }: {
   children: ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
-  const { locale } = params;
+  const { locale } = await params;
 
-  // 验证语言是否有效
   if (!isValidLocale(locale)) {
     notFound();
   }
 
-  const messages = await getMessages(locale);
+  // 并行获取 messages 和完整用户信息，减少 SSR 等待时间
+  const [messages, initialUser] = await Promise.all([
+    getMessages(locale),
+    getServerFullUser(), // 直接获取真实 name，首屏无闪烁
+  ]);
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      {children}
+      <AuthProvider initialUser={initialUser ?? null}>
+        <Navbar />
+        {children}
+      </AuthProvider>
     </NextIntlClientProvider>
   );
 }

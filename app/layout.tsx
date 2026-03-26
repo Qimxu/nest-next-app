@@ -1,48 +1,58 @@
 import './globals.css';
-import { Inter } from 'next/font/google';
 import { Metadata } from 'next';
-
-const inter = Inter({ subsets: ['latin'] });
+import { ReactNode } from 'react';
 
 // 元数据配置
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+  ),
   title: {
-    default: 'Nest Next App',
-    template: '%s | Nest Next App',
+    default: 'NestNext - Full-Stack Solution',
+    template: '%s | NestNext',
   },
-  description: 'A modern web application built with NestJS and Next.js',
+  description:
+    'An enterprise-grade full-stack template integrating NestJS backend and Next.js frontend',
   icons: {
     icon: '/static/logo.png',
     apple: '/static/logo.png',
   },
   openGraph: {
-    title: 'Nest Next App',
-    description: 'A modern web application built with NestJS and Next.js',
+    title: 'NestNext - Full-Stack Solution',
+    description:
+      'An enterprise-grade full-stack template integrating NestJS backend and Next.js frontend',
     images: ['/static/logo.png'],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Nest Next App',
-    description: 'A modern web application built with NestJS and Next.js',
+    title: 'NestNext - Full-Stack Solution',
+    description:
+      'An enterprise-grade full-stack template integrating NestJS backend and Next.js frontend',
     images: ['/static/logo.png'],
   },
 };
 
 // 根布局 - 必须包含 html 和 body 标签
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html>
+    <html suppressHydrationWarning>
       <head>
         <link rel="icon" href="/static/logo.png" />
         <link rel="apple-touch-icon" href="/static/logo.png" />
+        {/* Fonts: Orbitron (display) + Sora (body) */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Sora:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className="font-sans antialiased">{children}</body>
     </html>
   );
 }
