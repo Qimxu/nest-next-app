@@ -15,7 +15,7 @@ export interface ServerUser {
  */
 export async function getServerUser(): Promise<ServerUser | null> {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const accessToken = cookieStore.get('access_token')?.value;
 
     if (!accessToken) return null;

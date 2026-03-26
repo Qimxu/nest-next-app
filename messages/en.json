@@ -201,8 +201,8 @@
         "description": "Modular architecture, dependency injection, decorator syntax for maintainable enterprise backend services"
       },
       "nextjs": {
-        "title": "Next.js Frontend",
-        "description": "Server-side rendering, static generation, App Router for exceptional user experience"
+        "title": "Next.js 16",
+        "description": "Server-side rendering, App Router, Turbopack for 10x faster dev server and exceptional user experience"
       },
       "auth": {
         "title": "JWT Authentication",
@@ -225,7 +225,7 @@
       "title": "Modern Architecture",
       "description": "A front-end and back-end separated yet tightly integrated architecture that maintains development flexibility while providing a unified deployment experience.",
       "frontend": "Frontend",
-      "frontendDesc": "Server-side rendering, static generation, App Router with Tailwind CSS for exceptional user experience.",
+      "frontendDesc": "Next.js 16 with Turbopack, SSR, App Router with Tailwind CSS for exceptional user experience.",
       "backend": "Backend",
       "backendDesc": "Modular architecture, dependency injection, decorator syntax for maintainable enterprise services.",
       "database": "Database",
@@ -257,7 +257,7 @@
       "getStarted": "Get Started Free"
     },
     "footer": {
-      "tagline": "Enterprise full-stack template. NestJS + Next.js perfectly integrated.",
+      "tagline": "Enterprise full-stack template. NestJS + Next.js 16 with Turbopack perfectly integrated.",
       "product": "Product",
       "resources": "Resources",
       "contact": "Contact"

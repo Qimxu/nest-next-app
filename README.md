@@ -24,7 +24,10 @@
 
 ### 前端
 
-- **Next.js 14** - React 全栈框架 (App Router)
+- **Next.js 16** - React 全栈框架，内置 Turbopack
+  - ⚡ **Turbopack** - 开发服务器启动速度提升 10 倍
+  - 🔥 **极速 HMR** - 热更新几乎即时响应
+  - 📦 **优化构建** - 更快的生产构建
 - **Tailwind CSS** - CSS 框架
 - **next-intl** - 国际化 (zh / en)
 

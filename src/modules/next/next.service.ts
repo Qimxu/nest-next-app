@@ -21,8 +21,16 @@ export class NextService implements OnModuleInit, OnModuleDestroy {
 
   async onModuleInit() {
     process.env.NEXT_TELEMETRY_DISABLED = '1';
+
+    // Next.js 16 默认启用 Turbopack，但开发模式下与项目集成有兼容性问题
+    // 在开发模式下禁用 Turbopack，使用 webpack 模式
+    const isDev = process.env.NODE_ENV !== 'production';
+    if (isDev) {
+      process.env.TURBOPACK = '0';
+    }
+
     this.app = next({
-      dev: process.env.NODE_ENV !== 'production',
+      dev: isDev,
       quiet: true,
     });
     await this.app.prepare();

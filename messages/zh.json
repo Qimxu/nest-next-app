@@ -201,8 +201,8 @@
         "description": "模块化架构、依赖注入、装饰器语法，构建可维护的企业级后端服务"
       },
       "nextjs": {
-        "title": "Next.js 前端",
-        "description": "服务端渲染、静态生成、App Router，打造极致的用户体验"
+        "title": "Next.js 16",
+        "description": "服务端渲染、App Router、Turbopack 开发服务器提速 10 倍，打造极致的用户体验"
       },
       "auth": {
         "title": "JWT 认证",
@@ -225,7 +225,7 @@
       "title": "现代化架构",
       "description": "前后端分离但紧密集成的架构设计，既保持了开发的灵活性，又提供了统一的部署体验。",
       "frontend": "前端",
-      "frontendDesc": "服务端渲染、静态生成、App Router，配合 Tailwind CSS 打造极致的用户体验。",
+      "frontendDesc": "Next.js 16 配合 Turbopack，支持服务端渲染、App Router，配合 Tailwind CSS 打造极致的用户体验。",
       "backend": "后端",
       "backendDesc": "模块化架构、依赖注入、装饰器语法，构建可维护的企业级后端服务。",
       "database": "数据库",
@@ -257,7 +257,7 @@
       "getStarted": "免费开始"
     },
     "footer": {
-      "tagline": "企业级全栈开发模板，NestJS + Next.js 完美融合",
+      "tagline": "企业级全栈开发模板，NestJS + Next.js 16 配合 Turbopack 完美融合",
       "product": "产品",
       "resources": "资源",
       "contact": "联系我们"
