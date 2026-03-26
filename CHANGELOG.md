@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 升级
+
+- **Next.js 14 → Next.js 16**
+  - 升级至最新稳定版 Next.js 16
+  - 启用 Turbopack 开发模式，启动速度提升 10 倍
+  - 改进的开发体验和更快的 HMR
+  - 更好的并行路由支持
+  - 优化的构建性能
+
+### 修复
+
+- `next.config.js` 移除废弃的 `swcMinify` 选项（Next.js 16 已内置）
+- `app/[locale]/layout.tsx` 修复 `params` 类型（Next.js 16 中 params 为 Promise）
+- `lib/auth/server.ts` 修复 `cookies()` 调用（Next.js 16 中 cookies() 为异步函数）
+
+### 文档
+
+- 首页 Tech Stack 更新版本号标识 (Next.js 16)
+- 翻译文件同步更新技术栈版本信息
+- README.md 更新技术栈描述，添加 Turbopack 特性说明
+
 ## [1.1.1] - 2026-03-22
 
 ### Added

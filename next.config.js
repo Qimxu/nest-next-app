@@ -8,11 +8,13 @@ const config = loadYamlConfig(process.env.NODE_ENV);
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   distDir: '.next',
   env: {
     API_BASE_URL: config.app?.apiBaseUrl || 'http://localhost:3000',
     NEXT_PUBLIC_API_BASE_URL: config.app?.apiBaseUrl || 'http://localhost:3000',
+  },
+  turbopack: {
+    root: __dirname,
   },
 };
 

@@ -83,7 +83,7 @@ export default function HomePage() {
   ];
 
   const techStack = [
-    { name: 'Next.js 14', color: '#38bdf8', tag: 'Frontend' },
+    { name: 'Next.js 16', color: '#38bdf8', tag: 'Frontend' },
     { name: 'NestJS', color: '#a855f7', tag: 'Backend' },
     { name: 'TypeScript', color: '#818cf8', tag: 'Language' },
     { name: 'MySQL', color: '#4479A1', tag: 'Database' },
@@ -463,7 +463,7 @@ const [showPassword, setShowPassword] = useState(false);
                   <h3 className="text-xl font-bold text-white">
                     {t('home.architecture.frontend')}
                   </h3>
-                  <p className="text-[#38bdf8] text-sm">Next.js 14</p>
+                  <p className="text-[#38bdf8] text-sm">Next.js 16</p>
                 </div>
               </div>
               <p className="text-gray-400 leading-relaxed">
